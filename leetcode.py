@@ -1964,6 +1964,7 @@ class Solution:
         for n in full_nums:
             init = init ^ n
 
+        print(init)
         return init
 
 
