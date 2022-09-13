@@ -2018,7 +2018,7 @@ class Solution:
             if dfs(char):
                 return ""
 
-        # 因為使用
+        # 因為使用postorder dfs,從leaf往回
         res.reverse()
         print(res)
         return "".join(res)
