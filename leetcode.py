@@ -2174,5 +2174,5 @@ if __name__ == '__main__':
     # soultion.minMeetingRooms(intervals = [(0,30), (5,10), (15,20)])
     # soultion.validTree(n=5, edges=[[0,1],[0,2],[0,3],[0,4]])
     # soultion.missingNumber(nums = [3,0,1])
-    soultion.alienOrder(words=["wrt", "wrf", "er", "ett", "rftt"])
+    # soultion.alienOrder(words=["wrt", "wrf", "er", "ett", "rftt"])
     # soultion.alienOrder(words=["we", "ee", "we"])
