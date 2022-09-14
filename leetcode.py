@@ -2023,6 +2023,44 @@ class Solution:
         print(res)
         return "".join(res)
 
+    # hint
+    # 要先了解題目在說啥
+    # 必須要用word的長度來做分界 -> encode
+    # 找出#字元的面是數字，並且要知道前面的數字有可能是多個位數 -> deode
+    # decode的部分可以用個實際的例子來跑一次
+    # 注意不能用isdigital -> 因為數字有可能為字元
+    # https://www.youtube.com/watch?v=B1k_sxOSgv8
+    # Encode and Decode Strings - Leetcode 271
+    def encode(self, strs: list):
+        encode_string = ""
+        for word in strs:
+            word_len = str(len(word))
+            encode_string = encode_string + word_len + "#" + word
+
+        print(encode_string)
+        return encode_string
+
+    def decode(self, strs: str):
+        # i 為位置也就是pointer
+        result, i = [], 0
+
+        # 不能用for,因為要全部跑完
+        while i < len(strs):
+            # 給初始pointer的位置
+            j = i
+
+            # 抓出#字元的前面位數
+            while strs[j] != "#":
+                j = j + 1
+            length = int(strs[i: j])
+            word = strs[j + 1: j + length + 1]
+            result.append(word)
+
+            #更新pointer的位置
+            i = j + length + 1
+
+        print(result)
+        return result
 if __name__ == '__main__':
     soultion = Solution()
     # soultion.twoSum([2, 7, 11, 15], 9)
@@ -2176,3 +2214,6 @@ if __name__ == '__main__':
     # soultion.missingNumber(nums = [3,0,1])
     # soultion.alienOrder(words=["wrt", "wrf", "er", "ett", "rftt"])
     # soultion.alienOrder(words=["we", "ee", "we"])
+
+    encode = soultion.encode(["4#1", "o"])
+    decode = soultion.decode(encode)
