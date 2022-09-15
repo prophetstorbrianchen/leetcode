@@ -2044,6 +2044,9 @@ class Solution:
         # i 為位置也就是pointer
         result, i = [], 0
 
+        """
+        #-- method 1--
+        i = 0
         # 不能用for,因為要全部跑完
         while i < len(strs):
             # 給初始pointer的位置
@@ -2058,6 +2061,20 @@ class Solution:
 
             #更新pointer的位置
             i = j + length + 1
+        """
+        # -- method 2--
+        # j是另一個pointer，用來記初始位置
+        # i, j 會一起從起點開始
+        j = 0
+        while i < len(strs):
+            if strs[i] == "#":
+                length = int(strs[j: i])
+                word = strs[i + 1: i + length + 1]
+                result.append(word)
+                i = i + length + 1
+                j = i
+            else:
+                i = i + 1
 
         print(result)
         return result
@@ -2215,5 +2232,5 @@ if __name__ == '__main__':
     # soultion.alienOrder(words=["wrt", "wrf", "er", "ett", "rftt"])
     # soultion.alienOrder(words=["we", "ee", "we"])
 
-    encode = soultion.encode(["4#1", "o"])
+    encode = soultion.encode(["10#a#########b", "2#op"])
     decode = soultion.decode(encode)
