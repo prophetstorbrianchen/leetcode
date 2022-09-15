@@ -192,6 +192,81 @@ class MedianFinder:
         return (-1 * self.small[0] + self.large[0]) / 2
 
 
+class Codec:
+    # hint
+    # 此題就是把Tree轉list,list轉tree給實做出來(之前有想做，沒做出來)
+    # 此題為資料結構的實做題，很重要
+    # 此題我會用list去做，而非string
+    # serialize -> preorder並且加上leaf為none的情況
+    # deserialize -> 使用i當作指針，一直往後指.
+    # deserialize -> 要記得treenode可以在dfs內產生，並return none or node去串接node.left or node.left
+    # 寫dfs要記得dfs的定義是甚麼，以及base case訂好
+    # 看影片和筆記
+    # https://www.youtube.com/watch?v=u4JAi2JJhI8
+    def serialize(self, root):
+        res = []
+
+        def dfs(node):
+            if not node:
+                # N表示tree的None
+                res.append("N")
+                return
+            res.append(str(node.val))
+            dfs(node.left)
+            dfs(node.right)
+
+        dfs(root)
+        """
+        # 使用list來做
+        # print(res)
+        # return res
+        """
+        # 使用string來做
+        # 轉成逗號加sting,要記得這個用法
+        string_result = ",".join(res)
+        print(string_result)
+        return string_result
+
+    def deserialize(self, data):
+        # i is pointer for input list
+        # the self.i can be used for sub function directly
+        self.i = 0
+
+        # 使用list的方法來轉
+        """
+        def dfs():
+            # base case
+            if data[self.i] == "N":
+                self.i = self.i + 1
+                return None
+
+            node = TreeNode(int(data[self.i]))
+            self.i = self.i + 1
+
+            node.left = dfs()
+            node.right = dfs()
+
+            return node
+        return dfs()
+        """
+        # 答案要用string，但一樣要先轉成list，完全多此一舉
+        vals = data.split(",")
+        def dfs():
+            # base case
+            if vals[self.i] == "N":
+                self.i = self.i + 1
+                return None
+
+            node = TreeNode(int(vals[self.i]))
+            self.i = self.i + 1
+
+            node.left = dfs()
+            node.right = dfs()
+
+            return node
+
+        return dfs()
+
 class Solution:
     def twoSum(self, nums: [], target: int) -> []:
         seen = {}
@@ -2274,9 +2349,19 @@ if __name__ == '__main__':
     # encode = soultion.encode(["10#a#########b", "2#op"])
     # decode = soultion.decode(encode)
 
+    """
     medianFinder = MedianFinder()
     medianFinder.addNum(1)  # arr = [1]
     medianFinder.addNum(2)  # arr = [1, 2]
     print(medianFinder.findMedian())   # return 1.5 (i.e., (1 + 2) / 2)
     medianFinder.addNum(3)  # arr[1, 2, 3]
     print(medianFinder.findMedian())   # return 2.0
+    """
+
+    list1_first_node, list1_second_node, list1_third_node, list1_fourth_node, list1_fifth_node = TreeNode(1), TreeNode(2), TreeNode(3), TreeNode(4), TreeNode(5)
+    list1_first_node.left, list1_first_node.right = list1_second_node, list1_third_node
+    list1_third_node.left, list1_third_node.right = list1_fourth_node, list1_fifth_node
+    codec = Codec()
+    tree_list = codec.serialize(list1_first_node)
+    print(codec.deserialize(tree_list))
+    print(123)
