@@ -2191,6 +2191,27 @@ class Solution:
         print(result)
         return result
 
+    # hint
+    # 要了解從DFS那邊開始的解析(需要實際上劃過)，一直到直接使用DP -> 非常地不直覺，但很厲害
+    # 看看我寫的筆記以及影片
+    # https://www.youtube.com/watch?v=cjWnW0hdF1Y
+    def lengthOfLIS(self, nums: list) -> int:
+        # 這個這樣設定很高明，因為每個num從自己開始，都是1開始計算
+        # 不這樣做，必須還要額外往前拿值
+        LIS = [1] * len(nums)
+
+        # i從後面倒回來看
+        # j會從i+1開始直到nums結束
+        for i in range(len(nums) - 1, -1, -1):
+            for j in range(i + 1, len(nums)):
+                # 有條件地放進來，取max，因為max也不能append，所以只能22相比，比完在和下個比
+                # [1, 2, 4, 3] -> 那[4, 3]這個就不會放進來比
+                if nums[i] < nums[j]:
+                    LIS[i] = max(LIS[i], 1 + LIS[j])
+
+        print(max(LIS))
+        return max(LIS)
+
 
 if __name__ == '__main__':
     soultion = Solution()
@@ -2358,9 +2379,13 @@ if __name__ == '__main__':
     print(medianFinder.findMedian())   # return 2.0
     """
 
+    """
     list1_first_node, list1_second_node, list1_third_node, list1_fourth_node, list1_fifth_node = TreeNode(1), TreeNode(2), TreeNode(3), TreeNode(4), TreeNode(5)
     list1_first_node.left, list1_first_node.right = list1_second_node, list1_third_node
     list1_third_node.left, list1_third_node.right = list1_fourth_node, list1_fifth_node
     codec = Codec()
     tree_list = codec.serialize(list1_first_node)
     print(codec.deserialize(tree_list))
+    """
+
+    soultion.lengthOfLIS(nums = [10,9,2,5,3,7,101,18])
