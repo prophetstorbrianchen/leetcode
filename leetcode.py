@@ -2364,4 +2364,3 @@ if __name__ == '__main__':
     codec = Codec()
     tree_list = codec.serialize(list1_first_node)
     print(codec.deserialize(tree_list))
-    print(123)
