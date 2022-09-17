@@ -2344,6 +2344,53 @@ class Solution:
         print(res)
         return res
 
+    # hint
+    # 實作computer science的加法器
+    # 可以看這篇，就可以知道為什麼要用0x80000000
+    # https://blog.csdn.net/fuxuemingzhu/article/details/79379939
+    # https://www.polarxiong.com/archives/LeetCode-371-sum-of-two-integers.html
+    # https://www.youtube.com/watch?v=gVUrDV4tZfY
+    def getSum(self, a: int, b: int) -> int:
+        # --method 1--
+        """
+        # 32 bits integer max
+        MAX = 0x7FFFFFFF
+        # 32 bits interger min
+        MIN = 0x80000000
+        # mask to get last 32 bits
+        mask = 0xFFFFFFFF
+        while b != 0:
+            # ^ get different bits and & gets double 1s, << moves carry
+            a, b = (a ^ b) & mask, ((a & b) << 1) & mask
+        # if a is negative, get a's 32 bits complement positive first
+        # then get 32-bit positive's Python complement negative
+        return a if a <= MAX else ~(a ^ mask)
+        """
+
+        # --method 2--
+        # 必須要滿32bit
+        mask = 0xffffffff
+
+        # 使sum成為32bit，但不影響值
+        sum = (a ^ b) & mask
+
+        # 表示有進位
+        part = a & b
+
+        while part:
+            a = sum
+            b = (part << 1) & mask
+            sum = (a ^ b)
+            part = a & b
+
+        # 32 bits integer max
+        if sum & 0x80000000:
+            sum = sum - 0x100000000
+
+        print(sum)
+        return sum
+
+
 if __name__ == '__main__':
     soultion = Solution()
     # soultion.twoSum([2, 7, 11, 15], 9)
@@ -2523,4 +2570,5 @@ if __name__ == '__main__':
     # soultion.coinChange(coins = [1,2,5], amount = 11)
     # soultion.countComponents(n=5, edges = [[0,1],[1,2],[3,4]])
     # soultion.countBits(n=5)
-    soultion.topKFrequent(nums = [1,1,1,2,2,3], k = 2)
+    # soultion.topKFrequent(nums = [1,1,1,2,2,3], k = 2)
+    soultion.getSum(a = 2, b = 3)
