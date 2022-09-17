@@ -2290,6 +2290,59 @@ class Solution:
         print(res)
         return res
 
+    # hint
+    # 使用hash table(dict)
+    # 針對hash table的value做排序，然後append值
+    # 也可以使用heap -> 會比較快
+    # Needcode使用bucket sort -> 有空在學
+    # https://www.youtube.com/watch?v=YPTqKIgVk-k
+    def topKFrequent(self, nums: [int], k: int) -> [int]:
+        # --method 1--
+        """
+        hash_table = {}
+        res = []
+
+        # 先sort過，由小排到大
+        nums.sort()
+
+        # 建立hash table
+        for n in nums:
+            if str(n) not in hash_table:
+                hash_table[str(n)] = 0
+            hash_table[str(n)] = hash_table[str(n)] + 1
+
+        # print(hash_table)
+        # print(sorted(hash_table.items(), key=lambda item: (item[1], item[0]), reverse=True))
+        # 用lamdba排序，這為單條件排序，只依照value去排
+        # print(sorted(hash_table.items(), key=lambda item: (item[1]), reverse=True))
+        # 用lamdba排序，這為多條件排序，先依value排在排key
+        sorted_hash_table = sorted(hash_table.items(), key=lambda item: (item[1], item[0]), reverse=True)
+
+        # 抓k所需要的值
+        for i in range(k):
+            res.append(int(sorted_hash_table[i][0]))
+
+        # print(res)
+        return res
+        """
+        # method 2(使用 max heap)
+        heap = []
+        res = []
+        dict = collections.Counter(nums)
+        for key, val in dict.items():
+            # 乘-1，是為了max heap，item可以是tuple类型带卫星数据，默认使用item[0]进行排序
+            val = val * (-1)
+            heapq.heappush(heap, (val, key))
+
+        for i in range(k):
+            element_tuple = heapq.heappop(heap)
+            value = element_tuple[0] * (-1)
+            element = element_tuple[1]
+            print(element, value)
+            res.append(element)
+
+        print(res)
+        return res
 
 if __name__ == '__main__':
     soultion = Solution()
@@ -2469,4 +2522,5 @@ if __name__ == '__main__':
     # soultion.lengthOfLIS(nums = [10,9,2,5,3,7,101,18])
     # soultion.coinChange(coins = [1,2,5], amount = 11)
     # soultion.countComponents(n=5, edges = [[0,1],[1,2],[3,4]])
-    soultion.countBits(n=5)
+    # soultion.countBits(n=5)
+    soultion.topKFrequent(nums = [1,1,1,2,2,3], k = 2)
