@@ -2274,6 +2274,22 @@ class Solution:
 
         return res
 
+    # hint
+    # 對每個數先轉成二進制 -> 需要去除0b的開頭，然後對string做加總
+    # 然後做append
+    # 這題可以用DP去解，可參考Neetcode
+    # https://www.youtube.com/watch?v=RyBM56RIWrM
+    def countBits(self, n: int) -> [int]:
+        res = []
+        for i in range(n + 1):
+            sum = 0
+            for j in bin(i)[2:]:
+                sum = sum + int(j)
+            res.append(sum)
+
+        print(res)
+        return res
+
 
 if __name__ == '__main__':
     soultion = Solution()
@@ -2452,4 +2468,5 @@ if __name__ == '__main__':
 
     # soultion.lengthOfLIS(nums = [10,9,2,5,3,7,101,18])
     # soultion.coinChange(coins = [1,2,5], amount = 11)
-    soultion.countComponents(n=5, edges = [[0,1],[1,2],[3,4]])
+    # soultion.countComponents(n=5, edges = [[0,1],[1,2],[3,4]])
+    soultion.countBits(n=5)
