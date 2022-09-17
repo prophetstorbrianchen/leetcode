@@ -2212,6 +2212,31 @@ class Solution:
         print(max(LIS))
         return max(LIS)
 
+    # hint
+    # 需要從DFS了解，是可以用DFS做，但這是暴力解法
+    # 要看筆記以及影片
+    # https://www.youtube.com/watch?v=H9bfqozjoqs
+    def coinChange(self, coins: list, amount: int) -> int:
+        # 設定最大值不可超越的那種，或是給無限大也可以
+        dp = [amount + 1] * (amount + 1)
+        dp[0] = 0
+
+        # i為1~7的總和情形 -> [1, 3, 4, 5], amount = 7
+        for i in range(1, amount + 1):
+            # 每種情況
+            # 如果i = 7, 即要考慮 c = 1, 3, 4, 5 -> dp[6], dp[4], dp[3], dp[2]
+            for c in coins:
+                if i >= c:
+                    # 因為dp剛開始都有給個最大值，所以就是比一比，取最小的那個，然後更新
+                    dp[i] = min(dp[i], 1 + dp[i - c])
+
+        # 表示沒辦法更新到最後面的值 -> 也就是說[3, 5], amount = 7
+        if dp[amount] == amount + 1:
+            return -1
+        else:
+            print(dp[amount])
+            return dp[amount]
+
 
 if __name__ == '__main__':
     soultion = Solution()
@@ -2388,4 +2413,5 @@ if __name__ == '__main__':
     print(codec.deserialize(tree_list))
     """
 
-    soultion.lengthOfLIS(nums = [10,9,2,5,3,7,101,18])
+    # soultion.lengthOfLIS(nums = [10,9,2,5,3,7,101,18])
+    soultion.coinChange(coins = [1,2,5], amount = 11)
