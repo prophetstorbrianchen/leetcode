@@ -2559,6 +2559,75 @@ class Solution:
         print(res)
         return res
 
+    # hint
+    # 跟meeting room一樣，要先對start time排序
+    # 要特別處理overlap的問題，需要決定拿掉誰
+    # 我自己寫了2種方法但想法都是接近neetcode
+    # https://www.youtube.com/watch?v=nONCGxWoUfM
+    def eraseOverlapIntervals(self, intervals: [[int]]) -> int:
+        # method 1 -> 使用stack的方式，順便紀錄overlap的點
+        result = []
+        res_list = []
+        # sorted_intervals = sorted(intervals, key=lambda x: x[0])
+        sorted_intervals = sorted(intervals, key=lambda item: (item[0], item[1]))
+
+        for interval in sorted_intervals:
+            if not res_list:
+                res_list.append(interval)
+            else:
+                # overlop的情況
+                if interval[0] < res_list[-1][1]:
+                    # 這是一個special case,overlap時需要判斷，那個要拿掉
+                    # end在前的要保留，end在後的要拿掉 -> end比較小的要保留，end比較大的要拿掉
+                    if interval[1] <= res_list[-1][1]:
+                        result.append(res_list.pop())
+                        res_list.append(interval)
+                    else:
+                        result.append(interval)
+                else:
+                    # 沒有overlap就繼續疊
+                    res_list.append(interval)
+
+        print(result)
+        print(len(result))
+        return len(result)
+
+        # method 2 -> 不使用stack，只記overlap的次數，以及更新start/end值
+        """
+        res = 0
+        res_list = []
+        sorted_intervals = sorted(intervals, key=lambda item: (item[0], item[1]))
+
+        for interval in sorted_intervals:
+            if not res_list:
+                res_list.append(interval)
+            else:
+                # 發生overlapping，end在前的要保留，end在後的要拿掉
+                if interval[0] < res_list[-1][1]:
+                    res = res + 1
+                    if interval[1] <= res_list[-1][1]:
+                        res_list[-1][0], res_list[-1][1] = interval[0], interval[1]
+                else:
+                    # 沒有overlap就繼續更新start/end的值，到下一個interval
+                    res_list[-1][0], res_list[-1][1] = interval[0], interval[1]
+
+        print(res)
+        return res
+        """
+
+        # method 3 -> neetcode的方法
+        """
+        intervals.sort()
+        res = 0
+        prevEnd = intervals[0][1]
+        for start, end in intervals[1:]:
+            if start >= prevEnd:
+                prevEnd = end
+            else:
+                res += 1
+                prevEnd = min(end, prevEnd)
+        return res
+        """
 
 if __name__ == '__main__':
     soultion = Solution()
@@ -2743,4 +2812,5 @@ if __name__ == '__main__':
     # soultion.getSum(a = 2, b = 3)
 
     # soultion.pacificAtlantic(matrix = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]])
-    soultion.characterReplacement(s = "AABABBA", k = 1)
+    # soultion.characterReplacement(s = "AABABBA", k = 1)
+    soultion.eraseOverlapIntervals(intervals = [[-52,31],[-73,-26],[82,97],[-65,-11],[-62,-49],[95,99],[58,95],[-31,49],[66,98],[-63,2],[30,47],[-40,-26]])
