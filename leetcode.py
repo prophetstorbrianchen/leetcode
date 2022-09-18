@@ -2390,6 +2390,111 @@ class Solution:
         print(sum)
         return sum
 
+    # hint
+    # 觀念就是
+    # 小明和neet的觀念一樣，但code寫出來不一樣 -> 一個用while去做 一個用dfs去做，都要學一夏
+    # https://www.youtube.com/watch?v=s-VkcjHqkGI
+    # https://maxming0.github.io/2021/03/25/Pacific-Atlantic-Water-Flow/
+    def pacificAtlantic(self, matrix: [[int]]) -> [[int]]:
+        def dfs(matrix, q):
+            m = len(matrix)
+            n = len(matrix[0])
+            ret = set([])
+            # 需要處理每個點的上下左右
+            directions = {(-1, 0), (1, 0), (0, -1), (0, 1)}
+
+            # q為當前能流到pacific or atlantic的所有點，看你現在是處理哪邊
+            while len(q) > 0:
+                # 當前的點拿出來處理
+                curx, cury = q.pop()
+                ret.add((curx, cury))
+                height = matrix[curx][cury]
+
+                # process 上邊 -> (-1, 0)
+                tmpx, tmpy = -1 + curx, 0 + cury
+                # 新的點比當前的點高 -> 新的點也可以流入海洋
+                if 0 <= tmpx < m and 0 <= tmpy < n and matrix[tmpx][tmpy] >= height:
+                    # 若不再裡面，表示要納入 -> 因為有可能有重複，因為都是上下左右一起走
+                    if (tmpx, tmpy) not in ret:
+                        # 加到q中，之後從q繼續往下走
+                        q.append((tmpx, tmpy))
+                        # 把新的點加到結過中
+                        ret.add((tmpx, tmpy))
+
+                # process 下邊 -> (1, 0)
+                tmpx, tmpy = 1 + curx, 0 + cury
+                if 0 <= tmpx < m and 0 <= tmpy < n and matrix[tmpx][tmpy] >= height:
+                    # 若不再裡面，表示要納入
+                    if (tmpx, tmpy) not in ret:
+                        # 加到
+                        q.append((tmpx, tmpy))
+                        ret.add((tmpx, tmpy))
+
+                # process 左邊 -> (0, -1)
+                tmpx, tmpy = 0 + curx, -1 + cury
+                if 0 <= tmpx < m and 0 <= tmpy < n and matrix[tmpx][tmpy] >= height:
+                    # 若不再裡面，表示要納入
+                    if (tmpx, tmpy) not in ret:
+                        # 加到
+                        q.append((tmpx, tmpy))
+                        ret.add((tmpx, tmpy))
+
+                # process 右邊 -> (0, 1)
+                tmpx, tmpy = 0 + curx, 1 + cury
+                if 0 <= tmpx < m and 0 <= tmpy < n and matrix[tmpx][tmpy] >= height:
+                    # 若不再裡面，表示要納入
+                    if (tmpx, tmpy) not in ret:
+                        # 加到
+                        q.append((tmpx, tmpy))
+                        ret.add((tmpx, tmpy))
+
+                """
+                for dirx, diry in directions:
+                    # 新到的點，也就是4個方向新產生的點
+                    tmpx, tmpy = dirx + curx, diry + cury
+                    # 判斷新的點是否比當前的點來的高，能進if表示符合
+                    if 0 <= tmpx < m and 0 <= tmpy < n and matrix[tmpx][tmpy] >= height:
+                        # 若不再裡面，表示要納入
+                        if (tmpx, tmpy) not in ret:
+                            # 加到
+                            q.append((tmpx, tmpy))
+                            ret.add((tmpx, tmpy))
+                """
+            return ret
+
+        # 從靠pacific的點開始算，先拿到所有靠pacific的點
+        # m為row
+        m = len(matrix)
+        if m == 0:
+            return []
+        # n為col
+        n = len(matrix[0])
+
+        # q為相鄰pacific的起始點
+        q = []
+        for i in range(m):
+            q.append((i, 0))
+        for i in range(n):
+            q.append((0, i))
+
+        # 出來的結果為，能流到pacific的所有點
+        pac = dfs(matrix, q)
+
+        # 從靠atlantic的點開始算，先拿到所有靠atlantic的點
+        q = []
+        for i in range(m):
+            q.append((i, n - 1))
+        for i in range(n):
+            q.append((m - 1, i))
+
+        # 出來的結果為，能流到atlantic所有點
+        atl = dfs(matrix, q)
+
+        # pac和atl的結果做交集，那有交集的肯定就是同時能夠流入pacific和atlantic
+        res = pac.intersection(atl)
+        print(res)
+        return [list(x) for x in res]
+
 
 if __name__ == '__main__':
     soultion = Solution()
@@ -2571,4 +2676,6 @@ if __name__ == '__main__':
     # soultion.countComponents(n=5, edges = [[0,1],[1,2],[3,4]])
     # soultion.countBits(n=5)
     # soultion.topKFrequent(nums = [1,1,1,2,2,3], k = 2)
-    soultion.getSum(a = 2, b = 3)
+    # soultion.getSum(a = 2, b = 3)
+
+    soultion.pacificAtlantic(matrix = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]])
