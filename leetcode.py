@@ -2495,6 +2495,70 @@ class Solution:
         print(res)
         return [list(x) for x in res]
 
+    # hint
+    # 使用slide windows以及雙指針概念
+    # 必須搞清楚左指針何時向右移，右指針何時向右移
+    # 我的方法是老實的做count table
+    # neetcode在count table時有多動點手腳
+    # 這觀念講得不錯 -> https://www.youtube.com/watch?v=SLAKjysDODM
+    # https://www.youtube.com/watch?v=gqXU1UyA8pk
+    def characterReplacement(self, s: str, k: int) -> int:
+        # --method 1--
+        # 因為這個方法在update count表的時候，一直需要for loop重算，這樣不是一個好方法 -> TLE
+        """
+        res = 0
+        l = 0
+        r = 0
+
+        while r <= len(s):
+            count = {}
+            for char in s[l:r + 1]:
+                if char not in count:
+                    count[char] = 0
+                count[char] = count[char] + 1
+
+            max_count = count[max(count, key=lambda x: count[x])]
+
+            if len(s[l:r + 1]) - max_count <= k:
+                res = max(res, len(s[l:r + 1]))
+                r = r + 1
+            else:
+                l = l + 1
+
+        return res
+        """
+
+        # --method 2--
+        # 使用slid window的方式去更新count表，也就是說一次只抓一個字元更新
+        count = {}
+        res = 0
+        l = 0
+        r = 0
+
+        # r走到底 -> 最大的值也就決定了
+        while r <= len(s):
+            if not count:
+                max_count = 0
+            else:
+                max_count = count[max(count, key=lambda x: count[x])]
+
+            if len(s[l:r]) - max_count <= k:
+                res = max(res, len(s[l:r]))
+                prev_r = r
+                r = r + 1
+                # r向右移時，更新count table
+                if s[prev_r: r] not in count:
+                    count[s[prev_r: r]] = 0
+                count[s[prev_r: r]] = count[s[prev_r: r]] + 1
+            else:
+                # l向右移時，更新count table
+                prev_l = l
+                l = l + 1
+                count[s[prev_l: l]] = count[s[prev_l: l]] -1
+
+        print(res)
+        return res
+
 
 if __name__ == '__main__':
     soultion = Solution()
@@ -2678,4 +2742,5 @@ if __name__ == '__main__':
     # soultion.topKFrequent(nums = [1,1,1,2,2,3], k = 2)
     # soultion.getSum(a = 2, b = 3)
 
-    soultion.pacificAtlantic(matrix = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]])
+    # soultion.pacificAtlantic(matrix = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]])
+    soultion.characterReplacement(s = "AABABBA", k = 1)
