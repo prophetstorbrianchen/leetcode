@@ -2629,6 +2629,33 @@ class Solution:
         return res
         """
 
+    # hint
+    # 是用sameTree再加以改良 -> sameTree為重要的觀念題與工具題
+    # https://www.youtube.com/watch?v=E36O5SWp-LE
+    def isSubtree(self, root: TreeNode, subRoot: TreeNode) -> bool:
+        def dfs(r, s):
+            # 為same tree的題目，same tree是個工具題
+            # 2邊一起走，同時走到底，同時都是None表示有找到
+            if r is None and s is None:
+                return True
+
+            # 2邊一起走，有一個沒有，表示樹不一樣
+            if not r or not s:
+                return False
+
+            # root一樣，左樹以及右樹都一樣
+            if r.val == s.val and dfs(r.left, s.left) and dfs(r.right, s.right):
+                return True
+
+        # root本身為root的子樹
+        if not subRoot:
+            return True
+        if not root:
+            return False
+        # 最後一行不能帶dfs(root.left, subRoot) or dfs(root.right, subRoot) -> 那你就只會做一層而已也就是所謂的root的第一個左子樹和右子樹，但我們要判斷的是，所有的子樹，包含後面的好幾層
+        return dfs(root, subRoot) or self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
+
+
 if __name__ == '__main__':
     soultion = Solution()
     # soultion.twoSum([2, 7, 11, 15], 9)
@@ -2813,4 +2840,11 @@ if __name__ == '__main__':
 
     # soultion.pacificAtlantic(matrix = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]])
     # soultion.characterReplacement(s = "AABABBA", k = 1)
-    soultion.eraseOverlapIntervals(intervals = [[-52,31],[-73,-26],[82,97],[-65,-11],[-62,-49],[95,99],[58,95],[-31,49],[66,98],[-63,2],[30,47],[-40,-26]])
+    # soultion.eraseOverlapIntervals(intervals = [[-52,31],[-73,-26],[82,97],[-65,-11],[-62,-49],[95,99],[58,95],[-31,49],[66,98],[-63,2],[30,47],[-40,-26]])
+
+    root, node2, node3, node4, node5 = TreeNode(3), TreeNode(4), TreeNode(5), TreeNode(1), TreeNode(2)
+    root.left, root.right = node2, node3
+    node2.left, node2.right = node4, node5
+    subroot, subnode2, subnode3 = TreeNode(4), TreeNode(1), TreeNode(2)
+    subroot.left, subroot.right = subnode2, subnode3
+    soultion.isSubtree(root=root, subRoot=subroot)
