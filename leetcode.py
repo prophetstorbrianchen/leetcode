@@ -2655,6 +2655,34 @@ class Solution:
         # 最後一行不能帶dfs(root.left, subRoot) or dfs(root.right, subRoot) -> 那你就只會做一層而已也就是所謂的root的第一個左子樹和右子樹，但我們要判斷的是，所有的子樹，包含後面的好幾層
         return dfs(root, subRoot) or self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
 
+    # hint
+    # 必須要熟悉回文的題目以及模板(longestPalindrome)
+    # 先寫出判斷回文的funciton
+    # 必須要知道有2種case，必須分成奇數跟偶數2種case
+    # 可以看我的筆記或是影片
+    # https://www.youtube.com/watch?v=4RACzI5-du8
+    def countSubstrings(self, s: str) -> int:
+        self.res = 0
+
+        def is_palindrome(s, l_pointer, r_pointer):
+            while (0 <= l_pointer and r_pointer < len(s) and s[l_pointer] == s[r_pointer]):
+                l_pointer = l_pointer - 1
+                r_pointer = r_pointer + 1
+                self.res = self.res + 1
+
+            return s[l_pointer + 1:r_pointer]
+
+        # odd
+        for i in range(len(s)):
+            is_palindrome(s, i, i)
+
+        # even
+        for i in range(len(s)):
+            is_palindrome(s, i, i+1)
+
+        print(self.res)
+        return self.res
+
 
 if __name__ == '__main__':
     soultion = Solution()
@@ -2842,9 +2870,12 @@ if __name__ == '__main__':
     # soultion.characterReplacement(s = "AABABBA", k = 1)
     # soultion.eraseOverlapIntervals(intervals = [[-52,31],[-73,-26],[82,97],[-65,-11],[-62,-49],[95,99],[58,95],[-31,49],[66,98],[-63,2],[30,47],[-40,-26]])
 
+    """
     root, node2, node3, node4, node5 = TreeNode(3), TreeNode(4), TreeNode(5), TreeNode(1), TreeNode(2)
     root.left, root.right = node2, node3
     node2.left, node2.right = node4, node5
     subroot, subnode2, subnode3 = TreeNode(4), TreeNode(1), TreeNode(2)
     subroot.left, subroot.right = subnode2, subnode3
     soultion.isSubtree(root=root, subRoot=subroot)
+    """
+    soultion.countSubstrings(s = "aaab")
