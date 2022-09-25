@@ -15,7 +15,7 @@ class Solution:
 
         # 其中一個到底就要停止
         # 不太會merge，先理解模仿怎麼寫的
-        while list1 or list2:
+        while list1 and list2:
             if list1.val < list2.val:
                 tail.next = list1
                 list1 = list1.next
