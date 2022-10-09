@@ -14,7 +14,20 @@ class Solution:
                 print([seen[a], i])
                 return [seen[a], i]
 
+    def twoSum_2(self, nums: [int], target: int) -> [int]:
+        # hash table
+        seen = {}
+
+        for i, n in enumerate(nums):
+            a = target - n
+            if a not in seen:
+                seen[n] = i
+            else:
+                print([seen[a], i])
+                return [seen[a], i]
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.twoSum(nums = [3,3], target = 6)
+    solution.twoSum(nums = [2,7,11,15], target = 9)
+    solution.twoSum_2(nums = [3,2,4], target = 6)

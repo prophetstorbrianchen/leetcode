@@ -62,7 +62,38 @@ class Solution:
         print(longest_length)
         return longest_length
 
+    def characterReplacement_2(self, s: str, k: int) -> int:
+        l = 0
+        longest_len = 0
+        count_table = {}
+        for r in range(len(s)):
+            # 做表，算最多字元的各數
+            if s[r] not in count_table:
+                count_table[s[r]] = 0
+            count_table[s[r]] = count_table[s[r]] + 1
+
+            # 得到最多字元的長度
+            max_len = max(count_table.values())
+
+            # window_len - max <= k
+            window_len = r - l + 1
+            if window_len - max_len <= k:
+                longest_len = max(longest_len, window_len)
+            else:
+                # 向右移之後，前面的那個char不能被算在更新count_table，必須被扣掉
+                pre_char = s[l]
+
+                # 更新count_table
+                count_table[pre_char] = count_table[pre_char] - 1
+
+                # L要向右移1格
+                l = l + 1
+
+        print(longest_len)
+        return longest_len
+
 
 if __name__ == '__main__':
     solution = Solution()
     solution.characterReplacement(s = "AABABBA", k = 1)
+    solution.characterReplacement_2(s = "ABAB", k = 2)

@@ -20,7 +20,29 @@ class Solution:
         print(max_length)
         return max_length
 
+    def lengthOfLongestSubstring_2(self, s: str) -> int:
+        r = 0
+
+        max_len = 0.
+        # **要記錄每次更新的string**
+        cur_string = ""
+        while r < len(s):
+            if s[r] not in cur_string:
+                cur_string = cur_string + s[r]
+                max_len = max(max_len, len(cur_string))
+            else:
+                # **從重複的後面一個開始算**
+                duplica_index = cur_string.index(s[r])
+
+                # 更新cur_string
+                cur_string = cur_string[duplica_index + 1:] + s[r]
+
+            r = r + 1
+        print(max_len)
+        return max_len
+
 
 if __name__ == '__main__':
     solution = Solution()
     solution.lengthOfLongestSubstring(s = "abcabcbb")
+    solution.lengthOfLongestSubstring_2(s = " ")
