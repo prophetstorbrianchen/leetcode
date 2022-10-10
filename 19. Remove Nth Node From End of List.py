@@ -36,6 +36,33 @@ class Solution:
         tail.next = s.next
         return dummy.next
 
+    def removeNthFromEnd_2(self, head: [ListNode], n: int) -> [ListNode]:
+        s = head
+        f = head
+
+        for _ in range(n):
+            f = f.next
+
+        count = 0
+        # **注意while條件，因為前面f的設定並沒有f = head.next這樣的設定，這邊都是一次跳一步而已**
+        while f:
+            s = s.next
+            f = f.next
+            count = count + 1
+
+        # 設定dummy，記得起手式
+        dummy = ListNode()
+        dummy.next = head
+        tail = dummy
+
+        for _ in range(count):
+            tail = tail.next
+
+        # s的next就是我們要的
+        tail.next = s.next
+
+        return dummy.next
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -46,3 +73,4 @@ if __name__ == '__main__':
     list_4_node.next = list_5_node
 
     solution.removeNthFromEnd(head=list_1_node, n=2)
+    solution.removeNthFromEnd_2(head=list_1_node, n=2)
