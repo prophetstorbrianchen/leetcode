@@ -38,6 +38,31 @@ class Solution:
         print(result)
         return result
 
+    def levelOrder_2(self, root: [TreeNode]) -> [[int]]:
+        def dfs(r, d, res_dict):
+            if not r:
+                return
+
+            if d not in res_dict:
+                res_dict[d] = []
+
+            res_dict[d].append(r.val)
+            dfs(r.left, d + 1, res_dict)
+            dfs(r.right, d + 1, res_dict)
+
+        # edge case
+        if root is None:
+            return []
+
+        res = {}
+        dfs(root, 0, res)
+
+        result = []
+        for _, depth_list in res.items():
+            result.append(depth_list)
+
+        return result
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -47,5 +72,5 @@ if __name__ == '__main__':
     node3_p.left = node4_p
     node3_p.right = node5_p
 
-    solution.levelOrder(root = root_p)
-
+    # solution.levelOrder(root = root_p)
+    solution.levelOrder_2(root=root_p)

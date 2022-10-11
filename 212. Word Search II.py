@@ -86,7 +86,65 @@ class Solution:
         print(list(ret))
         return list(ret)
 
+    def findWords_2(self, board: [[str]], words: [str]) -> [str]:
+        def dfs(r, c, node, w):
+            # base case
+            if r < 0 or r >= rows:
+                return
+
+            if c < 0 or c >= cols:
+                return
+
+            if (r, c) in visit:
+                return
+
+            if board[r][c] not in node.children:
+                return
+
+            # 準備進去下一層
+            visit.add((r, c))
+
+            w = w + board[r][c]
+            # node = node.children[board[r][c]]
+
+            if node.children[board[r][c]].isWord:
+                res.add(w)
+
+            # 上下左右，進下一層
+            dfs(r - 1, c, node.children[board[r][c]], w)
+
+            dfs(r + 1, c, node.children[board[r][c]], w)
+
+            dfs(r, c - 1, node.children[board[r][c]], w)
+
+            dfs(r, c + 1, node.children[board[r][c]], w)
+
+            # 需要把visit過的移除掉，因為回到上一層了
+            visit.remove((r, c))
+
+        # add words，做出tire的資料結構
+        root = TireNode()
+
+        for word in words:
+            root.addWord(word)
+
+        # **注意藥用set**
+        visit = set()
+        res = set()
+
+        # 對board的每個字元都歷遍
+        rows = len(board)
+        cols = len(board[0])
+        word = ""
+        for row in range(rows):
+            for col in range(cols):
+                dfs(row, col, root, word)
+
+        # print(res)
+        return res
+
 
 if __name__ == '__main__':
     solution = Solution()
     solution.findWords(board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], words = ["oath","pea","eat","rain"])
+    solution.findWords_2(board=[["o", "a", "a", "n"], ["e", "t", "a", "e"], ["i", "h", "k", "r"], ["i", "f", "l", "v"]], words=["oath", "pea", "eat", "rain"])

@@ -34,6 +34,28 @@ class Solution:
         print(res)
         return int(res[0])
 
+    def maxPathSum_2(self, root: [TreeNode]) -> int:
+        def dfs(r):
+            if not r:
+                return 0
+
+            left_value = dfs(r.left)
+            left_value = max(left_value, 0)
+
+            right_value = dfs(r.right)
+            right_value = max(right_value, 0)
+
+            self.max_sum = max(self.max_sum, r.val + left_value + right_value)
+
+            return r.val + max(left_value, right_value)
+
+        # **要記得從負無限大當base，因為tree的值有可能為負數**
+        self.max_sum = float("-inf")
+        dfs(root)
+
+        print(self.max_sum)
+        return int(self.max_sum)
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -44,3 +66,4 @@ if __name__ == '__main__':
     node3_p.right = node5_p
 
     solution.maxPathSum(root = root_p)
+    solution.maxPathSum_2(root=root_p)

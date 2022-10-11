@@ -24,6 +24,28 @@ class Solution:
                 print(root)
                 return root
 
+    def lowestCommonAncestor_2(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        while root:
+            # 若一剛開始，p或q就是在root的位置
+            if root.val == p.val:
+                return p
+            elif root.val == q.val:
+                return q
+            else:
+                pass
+
+            # p和q在同一邊
+            if (p.val < root.val and q.val < root.val) or (p.val > root.val and q.val > root.val):
+                # p和q同在左子樹
+                if p.val < root.val and q.val < root.val:
+                    root = root.left
+                else:
+                    # p和q同在右子樹
+                    root = root.right
+            else:
+                # p和q在不同一邊
+                return root
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -36,4 +58,5 @@ if __name__ == '__main__':
     node3_p.right = node7_p
 
     solution.lowestCommonAncestor(root = root_p, p = node2_p, q = node3_p)
+    solution.lowestCommonAncestor_2(root=root_p, p=node2_p, q=node3_p)
 

@@ -47,6 +47,45 @@ class Codec:
         root = dfs()
         return root
 
+    def serialize_2(self, root):
+        def dfs(r):
+            if not r:
+                res.append("N")
+                return
+
+            # 使用preorder來排序
+            res.append(str(r.val))
+            dfs(r.left)
+            dfs(r.right)
+
+        res = []
+        dfs(root)
+
+        # **這個技巧很容易忘記**
+        string = ",".join(res)
+        print(string)
+        return string
+
+    def deserialize_2(self, data):
+        # 使用index向右進的方式，去組成tree
+        def dfs():
+            if self.data_list[self.i] == "N":
+                self.i = self.i + 1
+                return None
+
+            root = TreeNode(self.data_list[self.i])
+            self.i = self.i + 1
+            root.left = dfs()
+            root.right = dfs()
+
+            return root
+
+        # 先解掉string改成list
+        self.data_list = data.split(",")
+        self.i = 0
+
+        return dfs()
+
 
 # 這個版本的為list版本,可以用在任何Tree的題目，以方便建tree
 class BuildTree:
@@ -98,4 +137,6 @@ if __name__ == '__main__':
 
     ser = Codec()
     root_string = ser.serialize(root_p)
+    root = ser.deserialize(root_string)
+    root_string = ser.serialize_2(root_p)
     root = ser.deserialize(root_string)
