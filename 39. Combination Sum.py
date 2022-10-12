@@ -71,6 +71,55 @@ class Solution:
         return res
 
 
+
+
+
+
+
+
+
+
+
+
+    def combinationSum_2(self, candidates: [int], target: int) -> [[int]]:
+        def dfs(cur, path):
+            # base case
+            # 當扣到小於0，回上層
+            if cur < 0:
+                return
+
+            # 當扣到等於0，找到解
+            if cur == 0:
+                res.append(path)
+
+            for n in candidates:
+                # 不重複的方法，這個蠻重要的
+                if path and n < path[-1]:
+                    continue
+
+                # **為什麼不能這樣帶
+                """
+                if cur - n >= 0:
+                    cur = cur - n
+                    path = path + [n]
+                    dfs(cur - n, path + [n])
+                """
+                """
+                path.append(n)
+                """
+
+                if cur - n >= 0:
+                    dfs(cur - n, path + [n])
+
+        # 先做sort
+        res = []
+        candidates.sort()
+
+        # **運用[]，隨著每層去增減，這是技巧，但也是我的問題**
+        dfs(target, [])
+
+
 if __name__ == '__main__':
     solution = Solution()
-    solution.combinationSum(candidates = [2,3,6,7], target = 7)
+    # solution.combinationSum(candidates = [2,3,6,7], target = 7)
+    solution.combinationSum_2(candidates=[2, 3, 6, 7], target=7)
