@@ -44,6 +44,50 @@ class Solution:
         print(islands)
         return islands
 
+    def numIslands_2(self, grid: [[str]]) -> int:
+        def dfs(r, c):
+            # base case
+            if r < 0 or r >= rows:
+                return
+
+            if c < 0 or c >= cols:
+                return
+
+            if grid[r][c] == "0":
+                return
+
+            # 為進入下層做準備
+            # **走過的改成0**
+            grid[r][c] = "0"
+
+            # **防止往回走**
+            visit.add((r, c))
+
+            # 進入下層 -> 上下左右
+            dfs(r - 1, c)
+            dfs(r + 1, c)
+            dfs(r, c - 1)
+            dfs(r, c + 1)
+
+            visit.remove((r, c))
+
+            return
+
+        rows = len(grid)
+        cols = len(grid[0])
+        count = 0
+        visit = set()
+        for row in range(rows):
+            for col in range(cols):
+                # 歷遍所有點
+                if grid[row][col] == "1":
+                    dfs(row, col)
+                    count = count + 1
+
+        print(count)
+        return count
+
+
 
 if __name__ == '__main__':
     solution = Solution()
