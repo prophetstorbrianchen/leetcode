@@ -70,17 +70,6 @@ class Solution:
         print(res)
         return res
 
-
-
-
-
-
-
-
-
-
-
-
     def combinationSum_2(self, candidates: [int], target: int) -> [[int]]:
         def dfs(cur, path):
             # base case
@@ -97,12 +86,21 @@ class Solution:
                 if path and n < path[-1]:
                     continue
 
-                # **為什麼不能這樣帶
+                # **為什麼不能這樣帶 -> 因為會改到當層cur的值 -> 假設本層cur=7但cur = cur - 2 -> cur就變成5
+                # 所以你可以設個變數去assign，這樣就不會改到當層cur
+                # 在遞迴的式子中盡量不要assign回自己，這樣原本的值會被蓋掉
                 """
                 if cur - n >= 0:
                     cur = cur - n
                     path = path + [n]
-                    dfs(cur - n, path + [n])
+                    dfs(cur, path)
+                """
+                # 可改成這樣
+                """
+                f cur - n >= 0:
+                    next_cur = cur - n
+                    next_path = path + [n]
+                    dfs(next_cur, next_path)
                 """
                 """
                 path.append(n)
@@ -117,6 +115,7 @@ class Solution:
 
         # **運用[]，隨著每層去增減，這是技巧，但也是我的問題**
         dfs(target, [])
+        print(res)
 
 
 if __name__ == '__main__':

@@ -47,6 +47,48 @@ class Solution:
                 return False
         return True
 
+    def canFinish_2(self, numCourses: int, prerequisites: [[int]]) -> bool:
+        def dfs(node):
+            # base case
+            if graph_dict[node] == []:
+                return True
+
+            # 有cycle
+            if node in visit:
+                return False
+
+            # 準備進下一層
+            visit.add(node)
+            for n in graph_dict[node]:
+                # 檢查有無cycle
+                if not dfs(n):
+                    return False
+
+            visit.remove(node)
+
+            # 走訪完就要設為空，讓最外面的迴圈可以不用每次都重作 -> 有點類似島嶼數量納提的概念
+            # **沒有這行會TLE，這非常重要**
+            graph_dict[node] = []
+            return True
+
+        # 有向圖的table
+        graph_dict = {}
+        for i in range(numCourses):
+            if i not in graph_dict:
+                graph_dict[i] = []
+
+        for item in prerequisites:
+            graph_dict[item[0]].append(item[1])
+
+        visit = set()
+        for i in range(numCourses):
+            # 使用dfs看有無cycle
+            if not dfs(i):
+                print(False)
+                return False
+        print(True)
+        return True
+
 
 if __name__ == '__main__':
     solution = Solution()
