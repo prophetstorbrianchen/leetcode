@@ -33,7 +33,54 @@ class Solution:
 
         return ans
 
+    def longestPalindrome_2(self, s: str) -> str:
+        # 先定義回文的function
+        def palindrome(s, l, r):
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                l = l - 1
+                r = r + 1
+
+            # 回傳此次最大可能的回文string
+            return s[l + 1: r]
+
+        # 同一串文字必須走過odd和even
+        max_odd = ""
+        max_even = ""
+        for i in range(len(s)):
+            # **要記得是整串string都要進來做，但是每次index都要換(從0開始)，才能每個可能的回文都能找到**
+            temp_odd_max = palindrome(s, i, i)
+            if len(max_odd) < len(temp_odd_max):
+                max_odd = temp_odd_max
+
+            temp_even_max = palindrome(s, i, i + 1)
+            if len(max_even) < len(temp_even_max):
+                max_even = temp_even_max
+
+        # 對odd和even分別的max再取max
+        if len(max_odd) < len(max_even):
+            longest_palindrome = max_even
+        else:
+            longest_palindrome = max_odd
+
+        print(longest_palindrome)
+        return longest_palindrome
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.longestPalindrome(s = "babad")
+    solution.longestPalindrome_2(s = "cbbs")

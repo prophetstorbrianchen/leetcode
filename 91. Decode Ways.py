@@ -29,6 +29,19 @@ class Solution:
                 dp[i] += dp[i - 2]
         return dp[n - 1]
 
+    # 這思路可以回去想想
+    # https://yuihuang.com/leetcode-91/
+    def numDecodings_2(self, s: str) -> int:
+        # 沒使用遞迴
+        n = len(s)
+        dp = [0] * n + [1]
+        for i in range(n):
+            if s[i] != '0':
+                dp[i] = dp[i] + dp[i - 1]
+            if i > 0 and 1 <= int(s[i - 1:i + 1]) <= 26 and s[i - 1] != '0':
+                dp[i] = dp[i] + dp[i - 2]
+        return dp[n - 1]
+
 
 if __name__ == '__main__':
     solution = Solution()

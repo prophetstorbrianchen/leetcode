@@ -23,6 +23,28 @@ class Solution:
         print(dp[-1])
         return dp[-1]
 
+    # dp[n] = max(dp[n-2] + nums[n], dp[n-1])
+    def rob_2(self, nums: [int]) -> int:
+        # define dp base
+        dp = [-1] * len(nums)
+
+        # edge case
+        # 當只有1棟房子
+        if len(nums) == 1:
+            return nums[0]
+        # 當只有2棟房子
+        elif len(nums) == 2:
+            return max(nums[0], nums[1])
+        else:
+            dp[0] = nums[0]
+            dp[1] = max(nums[0], nums[1])
+
+        # algo
+        for n in range(2, len(nums)):
+            dp[n] = max(dp[n - 2] + nums[n], dp[n - 1])
+
+        return dp[-1]
+
 
 if __name__ == '__main__':
     solution = Solution()
