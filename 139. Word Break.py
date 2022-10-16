@@ -38,6 +38,22 @@ class Solution:
 
         return dp[-1]
 
+    def wordBreak_2(self, s: str, wordDict: [str]) -> bool:
+        dp = [False] * (len(s) + 1)
+        dp[0] = True
+
+        # **理解了，但這題code寫不出來**
+        # 記得dp和s的起始位置不一樣 -> 自己畫一次圖
+        for i in range(len(s)):
+            if dp[i] is True:
+                for word in wordDict:
+                    # 剛好符合wordDict中的word，
+                    if s[i: i + len(word)] == word:
+                        dp[i + len(word)] = True
+
+        print(dp[-1])
+        return dp[-1]
+
 
 if __name__ == '__main__':
     solution = Solution()
