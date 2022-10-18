@@ -19,9 +19,12 @@ class build_link_list:
 
 class Solution:
     # hint
-    # 工具題，必著眼睛都要會
-    # 可以看筆記
+    # 可以使用hash table來做 -> method 2
+    # 可以使用counter -> method 1
+    # 可以使用雙指針來做
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> [ListNode]:
+        # [method 1]
+        """
         # a的個數
         tail_a = headA
         count_a = 0
@@ -53,6 +56,21 @@ class Solution:
                     headB = headB.next
                     count_a = count_a - 1
                     count_b = count_b - 1
+        return None
+        """
+        # [method 2]
+        hash_table = set()
+        while headA:
+            hash_table.add(headA)
+            headA = headA.next
+
+        while headB:
+            if headB in hash_table:
+                print(headB)
+                return headB
+            headB = headB.next
+
+        print(None)
         return None
 
 
