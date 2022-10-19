@@ -25,6 +25,7 @@ class Solution:
         dummy_l2 = ListNode()
         tail_l2 = dummy_l2
 
+        # 使用index來區分odd or even，並用來create node和連接
         while head:
             if (index % 2) == 0:
                 node = ListNode(head.val)
