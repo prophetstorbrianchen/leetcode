@@ -1,4 +1,5 @@
 from base_function import BuildTree
+from collections import deque
 
 
 class TreeNode:
@@ -13,6 +14,7 @@ class Solution:
     # 可用dfs，但主要應該是要用bfs
     def zigzagLevelOrder(self, root: [TreeNode]) -> [[int]]:
         # method 1 -> dfs
+        """
         def dfs(r, d):
             if not r:
                 return
@@ -34,6 +36,38 @@ class Solution:
                 result.append(value[::-1])
             else:
                 result.append(value)
+        return result
+        """
+        # method 2 -> bfs
+        if not root:
+            return
+        q = deque([root])
+        depth = 0
+        result = []
+        while q:
+            depth = depth + 1
+            new_q = []
+            tmp = []
+            for _ in range(len(q)):
+                # do somethins with this layer nodes...
+                node = q.pop()
+                tmp.append(node.val)
+                # 一層要換一層不用換
+                if depth % 2 == 1:
+                    if node.left:
+                        new_q.append(node.left)
+                    if node.right:
+                        new_q.append(node.right)
+                else:
+                    if node.right:
+                        new_q.append(node.right)
+                    if node.left:
+                        new_q.append(node.left)
+            # 记得将旧的队列替换成新的队列
+            q = new_q
+            result.append(tmp)
+        # 最后return想要返回的东西
+        print(result)
         return result
 
 
