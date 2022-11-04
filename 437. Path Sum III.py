@@ -34,10 +34,10 @@ class Solution:
             # 這種用法要記，從下面判斷的值，往上開始傳
             # 而傳上來的值，是需要左右子樹來累積的
             # 累積完在往上層傳
-            pc = pc + count_path(cn.left, ts, cp)
-            pc = pc + count_path(cn.right, ts, cp)
+            accumlate_pc = pc + count_path(cn.left, ts, cp) + count_path(cn.right, ts, cp)
+            print(accumlate_pc)
             cp.pop()
-            return pc
+            return accumlate_pc
 
         total_count = count_path(root, targetSum, [])
         print(total_count)
