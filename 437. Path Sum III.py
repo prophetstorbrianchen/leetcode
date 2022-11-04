@@ -12,32 +12,37 @@ class TreeNode:
 class Solution:
     # hint
     # 使用combination sum的概念來做
+    # cp和pc為體制外的東西，不需要隨著上下層而改變 -> cp和cn是要隨著我們的需要而改變
     def pathSum(self, root: [TreeNode], targetSum: int) -> int:
-        def dfs(r, target, path):
-            # base case
-            if not r:
-                return
+        def count_path(cn, ts, cp):
+            if not cn:
+                return 0
 
-            # 使用差值 -> 直到0才保留
-            if target - r.val < 0:
-                next_target = target
-                next_path = path
-            else:
-                next_target = target - r.val
-                next_path = path + [r.val]
+            cp.append(cn.val)
+            # pc ->
+            pc = 0
 
-            if next_target == 0:
-                res.append(next_path)
-                return
+            # 每下到一層，就重新算一次，因為不一定要從root開始算，也不一定要從leaf開始算
+            ps = 0
 
-            dfs(r.left, next_target, next_path)
-            dfs(r.right, next_target, next_path)
+            for i in range(len(cp) - 1, -1, -1):
+                # 開始做加總，如果ps加到跟ts一樣時，表示這就是我們要的
+                ps = ps + cp[i]
+                if ps == ts:
+                    pc = pc + 1
 
-        res = []
-        dfs(root, targetSum, [])
+            # 這種用法要記，從下面判斷的值，往上開始傳
+            # 而傳上來的值，是需要左右子樹來累積的
+            # 累積完在往上層傳
+            pc = pc + count_path(cn.left, ts, cp)
+            pc = pc + count_path(cn.right, ts, cp)
+            cp.pop()
+            return pc
 
-        print(res)
-        return len(res)
+        total_count = count_path(root, targetSum, [])
+        print(total_count)
+
+        return total_count
 
 
 if __name__ == '__main__':
