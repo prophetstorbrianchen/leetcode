@@ -1,4 +1,7 @@
 class Solution:
+    # hint
+    # https://www.youtube.com/watch?v=xPksuvWKzqg
+    # https://maxming0.github.io/2020/11/04/Minimum-Height-Trees/
     def findMinHeightTrees(self, n: int, edges: [[int]]) -> [int]:
         edge = [set() for _ in range(n)]
 
