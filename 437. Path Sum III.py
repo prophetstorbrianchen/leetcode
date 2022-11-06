@@ -34,8 +34,11 @@ class Solution:
             # 這種用法要記，從下面判斷的值，往上開始傳
             # 而傳上來的值，是需要左右子樹來累積的
             # 累積完在往上層傳
+            # 此層的結果不必向下傳，而是要等左右子樹的結果向上傳
             accumlate_pc = pc + count_path(cn.left, ts, cp) + count_path(cn.right, ts, cp)
             print(accumlate_pc)
+
+            # 左右子樹傳完值上來之後就要pop
             cp.pop()
             return accumlate_pc
 

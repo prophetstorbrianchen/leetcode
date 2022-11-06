@@ -14,6 +14,7 @@ class Solution:
     def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> [int]:
         # 樹轉圖的方法，要記熟
         # 因為是變成圖，所以要記相連的點 -> 父節點，左右子節點
+        # 使用DFS建圖
         def build_graph(node, parent):
             if not node:
                 return
@@ -38,6 +39,8 @@ class Solution:
         # defaultdict(list) -> 這個方法可以學一下，dict帶list
         # self.graph = defaultdict(list)
         self.graph = {}
+
+        # root本來就沒有parent所以給None
         build_graph(root, None)
         res = []
         seen = set()
