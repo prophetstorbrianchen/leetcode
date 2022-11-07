@@ -3,6 +3,10 @@ class Solution:
     # 這題忘光了，需要看影片重新筆記
     # 這題是有方向性的圖
     # 不過dict map的模板大概就是長這樣
+    # 访问完整个图，即图是否DAG
+    # 可和210一起看
+    # 使用BFS做一次
+    # https://blog.csdn.net/liuliangcan/article/details/125567442
     def canFinish(self, numCourses: int, prerequisites: [[int]]) -> bool:
         def dfs(crs):
             # --base case--
