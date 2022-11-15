@@ -31,7 +31,25 @@ class Solution:
         print(str(int(res)))
         return str(int(res))
 
+    def largestNumber_2(self, nums: [int]) -> str:
+        def fun(a, b):
+            # [30, 34] -> 3034 vs 3430 -> 3034 < 3430 ->[34, 30]
+            if int(str(a) + str(b)) > int(str(b) + str(a)):
+                return -1
+            else:
+                return 1
+
+        # **這個函式(cmp_to_key)非常容易忘記 -> 可以自訂交換的公式**
+        nums = sorted(nums, key=cmp_to_key(fun), reverse=False)
+
+        nums_string = ""
+        for n in nums:
+            nums_string = nums_string + str(n)
+
+        # **防止"00"這種string -> int("00")為0 => 先轉int，去除00**
+        return str(int(nums_string))
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.largestNumber(nums = [0,0])
+    solution.largestNumber_2(nums = [0,0])

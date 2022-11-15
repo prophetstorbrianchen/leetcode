@@ -12,7 +12,7 @@ class Solution:
         Do not return anything, modify nums in-place instead.
         """
         n = len(nums)
-        # 從倒數第二個開始遍歷
+        # 從倒數第二個開始遍歷 -> 因為由後向前，如果從倒數第一個開始會out of range
         i = n - 2
         while i >= 0:
             # 判斷是否生序
