@@ -84,10 +84,62 @@ class Solution:
 
         return dummy.next
 
+    def sortList_3(self, head: [ListNode]) -> [ListNode]:
+        # **因為是遞迴，所以要有base case**
+        if not head or not head.next:
+            return head
+
+        left = head
+        right = self.getmid_3(left)
+
+        tmp = right.next
+        # **當right.next = None時，已經切分出left和right**
+        right.next = None
+        right = tmp
+
+        # 繼續切left和right
+        self.sortList_3(left)
+        self.sortList_3(right)
+
+        # 合併
+        return self.merged_3(left, right)
+
+    def getmid_3(self, head):
+        # **一定要熟練**
+        s = head
+        f = head.next
+        while f and f.next:
+            s = s.next
+            f = f.next.next
+
+        return s
+
+    def merged_3(self, list1, list2):
+        # **一定要熟練**
+        dummy = ListNode()
+        tail = dummy
+
+        while list1 and list2:
+            if list1.val < list2.val:
+                tail.next = list1
+                list1 = list1.next
+            else:
+                tail.next = list2
+                list2 = list2.next
+
+            tail = tail.next
+
+        if list1:
+            tail.next = list1
+        else:
+            tail.next = list2
+
+        return dummy.next
+
 
 if __name__ == '__main__':
     solution = Solution()
     buildLinkList = build_link_list()
     head = buildLinkList.build([4,2,1,3])
 
-    solution.sortList_2(head = head)
+    solution.sortList_3(head = head)

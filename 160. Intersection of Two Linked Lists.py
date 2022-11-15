@@ -73,6 +73,24 @@ class Solution:
         print(None)
         return None
 
+    def getIntersectionNode_2(self, headA: ListNode, headB: ListNode) -> [ListNode]:
+        # hash table
+        hash_table = set()
+
+        while headA:
+            hash_table.add(headA)
+            headA = headA.next
+
+        while headB:
+            if headB in hash_table:
+                print(headB)
+                return headB
+            else:
+                headB = headB.next
+
+        print(None)
+        return None
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -83,4 +101,4 @@ if __name__ == '__main__':
 
     a.next.next = c
     b.next.next.next = c
-    solution.getIntersectionNode(headA=a, headB=b)
+    solution.getIntersectionNode_2(headA=a, headB=b)

@@ -74,9 +74,77 @@ class Solution:
         return dummy.next
 
 
+
+
+
+
+
+
+
+    def reverseBetween_2(self, head: [ListNode], left: int, right: int) -> [ListNode]:
+        # **基本工具題**
+        def reverse(list):
+            prev = None
+            while list:
+                tmp = list.next
+                list.next = prev
+                prev = list
+                list = tmp
+
+            return prev
+
+        # **基本工具題**
+        def merge(list1, list2):
+            tail = list1
+            while tail:
+                if tail.next is None:
+                    break
+                else:
+                    tail = tail.next
+
+            tail.next = list2
+
+        s = head
+        for _ in range(right - 1):
+            s = s.next
+
+        # 切出(左+中)和右
+        tmp = s.next
+        s.next = None
+        right = tmp
+
+        dummy = ListNode()
+        dummy.next = head
+        tail = dummy
+
+        # 切出(左+中)
+        for _ in range(left - 1):
+            tail = tail.next
+
+        tmp = tail.next
+        tail.next = None
+        mid = tmp
+        # **要熟練這個地方 -> 防left = 1**
+        left = dummy
+
+        # reverse
+        reverse_mid = reverse(mid)
+
+        # merge
+        merge(left, reverse_mid)
+        merge(left, right)
+
+        print(dummy)
+        return dummy.next
+
+
+
+
+
 if __name__ == '__main__':
     solution = Solution()
     buildLinkList = build_link_list()
-    a = buildLinkList.build([3, 5])
+    # a = buildLinkList.build([3, 5])
+    a = buildLinkList.build([1, 2, 3, 4, 5])
 
-    solution.reverseBetween(head = a, left = 1, right = 2)
+    solution.reverseBetween_2(head = a, left = 2, right = 4)
