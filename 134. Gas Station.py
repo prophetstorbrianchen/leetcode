@@ -93,7 +93,36 @@ class Solution:
         print(start)
         return start
 
+    def canCompleteCircuit_2(self, gas: [int], cost: [int]) -> int:
+        # 他的station是從0開始一直到n
+        # 先判斷是不是能夠走完
+        if sum(gas) - sum(cost) < 0:
+            return -1
+
+        # 下面是一定可以走完的情況，但要從哪個station開始走?
+        # 先算出gas和cost的diff
+        diff_list = []
+
+        for g, c in zip(gas, cost):
+            diff = g - c
+            diff_list.append(diff)
+
+        # 若為負 -> 不可能為起點; 若為正 -> 有機會，但必須走到後面都不能變為負
+        start = 0
+        total = 0
+        for i, n in enumerate(diff_list):
+            total = total + n
+
+            if total < 0:
+                # 需要重算
+                total = 0
+                # **這邊可以看筆記**
+                start = i + 1
+
+        print(start)
+        return start
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.canCompleteCircuit(gas = [1,2,3,4,5], cost = [3,4,5,1,2])
+    solution.canCompleteCircuit_2(gas = [1,2,3,4,5], cost = [3,4,5,1,2])

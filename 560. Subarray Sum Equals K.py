@@ -28,6 +28,25 @@ class Solution:
 
         return res
 
+    def subarraySum_2(self, nums: [int], k: int) -> int:
+        # 使用prefix和hashtable來做
+        hash_table = {0: 1}
+
+        prefix_sum = 0
+        res = 0
+        for n in nums:
+            prefix_sum = prefix_sum + n
+
+            # 要注意是+hash_table[prefix_sum - k]而非+1 -> 沒有很懂
+            if prefix_sum - k in hash_table:
+                res = res + hash_table[prefix_sum - k]
+
+            if prefix_sum not in hash_table:
+                hash_table[prefix_sum] = 0
+            hash_table[prefix_sum] = hash_table[prefix_sum] + 1
+
+        return res
+
 
 if __name__ == '__main__':
     solution = Solution()
