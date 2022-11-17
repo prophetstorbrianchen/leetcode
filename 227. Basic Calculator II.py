@@ -30,7 +30,46 @@ class Solution:
                 num = 0
         return sum(stack)
 
+    def calculate_2(self, s: str) -> int:
+        # 此題的重點就是把運算後的結果全部放入stack裡面 -> sum(stack)即是結果
+        # **一開始必須要先給一個preSign = '+'，不然格數一定會錯**
+        # **必須知道sting如何轉數字，這有點技巧在裡面. "1" -> 1, "12" -> 10+2, "123" -> 100+20+3
+        # 正數 + -> push n
+        # 碰到 - -> push n * (-1)
+        # 碰到 * -> pop之後*完，在push進去
+        # 碰到 * -> pop之後/完，在push進去
+
+        # "3+2*2" -> 第一次是3就變成+3放入
+        preSign = "+"
+        stack = []
+        num = 0
+        for i in range(len(s)):
+            # string轉數字
+            if s[i] != " " and s[i].isdigit():
+                # 記住這個技巧str轉int時 -> print(ord('1') - ord('0')) -> 1
+                num = num * 10 + ord(s[i]) - ord('0')
+            # **這個的意思 i == len(s) - 1 -> 保障最後一個數也是能夠被加減乘除的**
+            if i == len(s) - 1 or s[i] in '+-*/':
+                # 使用上一次的加減乘除號
+                if preSign == '+':
+                    stack.append(num)
+                elif preSign == '-':
+                    stack.append(num * (-1))
+                elif preSign == '*':
+                    stack.append(stack.pop() * num)
+                else:
+                    stack.append(int(stack.pop() / num))
+
+                # 記著這一次的加減乘除號
+                # 每個加減乘除號之後都是一個新的數
+                preSign = s[i]
+                num = 0
+
+        print(sum(stack))
+        return sum(stack)
+
 
 if __name__ == '__main__':
+    print(ord('1') - ord('0'))
     solution = Solution()
-    solution.calculate(s = "3+2*2")
+    solution.calculate_2(s = "3+2*2")
