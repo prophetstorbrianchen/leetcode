@@ -60,6 +60,29 @@ class Solution:
         print(max_lenght)
         return max_lenght
 
+    def longestValidParentheses_2(self, s: str) -> int:
+        # 使用stack來記括號的index
+        # 初始stack要先給-1 -> 為了好算(可以自己推一下)
+        # 碰到"(" -> append; 碰到")" -> pop
+        # **但有一情況例外 -> "())" 連續2個")" -> 此時的stack已經是不合法的了，所以直接填上第二個")"的index在stack裡面(可以理解成重新reset，前面的那些都不算數了)**
+        # 正常狀況下，可以去得到當前的合法括號數目
+
+        stack = [-1]
+        max_valid_length = 0
+        for i, par in enumerate(s):
+            if par == "(":
+                stack.append(i)
+            else:
+                stack.pop()
+
+                # 例外狀況，若是不放裡面，也會造成stack為空，使的下次stack.pop code error
+                if not stack:
+                    stack.append(i)
+                else:
+                    max_valid_length = max(max_valid_length, i - stack[-1])
+
+        return max_valid_length
+
 
 if __name__ == '__main__':
     solution = Solution()

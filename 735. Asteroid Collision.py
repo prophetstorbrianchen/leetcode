@@ -37,7 +37,28 @@ class Solution:
         print(stack)
         return stack
 
+    def asteroidCollision_2(self, asteroids: [int]) -> [int]:
+        ans = []
+        for new in asteroids:
+            # 我思路是對的，但在while中判斷是錯的 -> 相向時在會撞
+            # 原來可以while else的作法
+            # 比完再pop就好，不需要先pop
+            # 會無限loop的stack題目，比較少見，這是其中一題
+            while ans and new < 0 < ans[-1]:
+                if ans[-1] < -new:
+                    # 這個continue很重要，可以一直比較
+                    ans.pop()
+                    continue
+                elif ans[-1] == -new:
+                    ans.pop()
+                # **注意這個break，停止while loop的重點 -> 在不合這些規定時就break掉 -> 新進的element沒有辦法造成相撞時，就表示這個stack已經穩定**
+                break
+            else:
+                ans.append(new)
+        print(ans)
+        return ans
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.asteroidCollision(asteroids = [-2,-1,1,-2])
+    solution.asteroidCollision_2(asteroids = [5,10,-5])

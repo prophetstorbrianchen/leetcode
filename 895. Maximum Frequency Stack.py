@@ -32,6 +32,44 @@ class FreqStack:
             self.maxCnt = self.maxCnt - 1
         return res
 
+class FreqStack_2:
+    def __init__(self):
+        self.cnt = {}
+        self.maxCnt = 0
+        self.stacks = {}
+
+    def push(self, val: int) -> None:
+        # 需要做2張表，一個self.maxCnt
+        # self.cnt -> 計算每個num的當前總數 -> {5: 3, 7: 2, 4: 1}
+        # self.stacks -> 分成好幾階，在為count n的時候，有哪幾個數字在裡面 -> {1: [5,7,4], 2: [5,7], 3: [5]}
+        # self.maxCnt -> 用來記當前最多num的個數 -> 這個可以利用self.stacks來反查是哪個num(很厲害的)
+
+        # 做self.cnt這張表
+        if val not in self.cnt:
+            self.cnt[val] = 0
+        self.cnt[val] = self.cnt[val] + 1
+
+        # 每次進來的數字，都會有當前的個數
+        valCnt = self.cnt[val]
+
+        # 更新self.stack這張表
+        if valCnt > self.maxCnt:
+            # 每次更新最大值 -> 要隨時記著最多次 -> 可以用self.stacks反推最多次的是哪個數字 -> self.stacks[self.maxCnt]
+            self.maxCnt = valCnt
+            if valCnt not in self.stacks:
+                self.stacks[valCnt] = []
+        self.stacks[valCnt].append(val)
+
+    def pop(self) -> int:
+        # {1: [5,7,4], 2: [5,7], 3: [5]} -> res is 5
+        res = self.stacks[self.maxCnt].pop()
+        # 更新maxCnt和2個table
+        self.cnt[res] = self.cnt[res] - 1
+        if not self.stacks[self.maxCnt]:
+            # 若為空，表示maxCnt就要降一街 -> {1: [5,7,4], 2: [5,7], 3: []} -> 3為空
+            self.maxCnt = self.maxCnt - 1
+        return res
+
 
 if __name__ == '__main__':
     freqStack = FreqStack()
