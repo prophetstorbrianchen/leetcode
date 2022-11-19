@@ -70,10 +70,51 @@ class Solution:
         print(result)
         return result
 
+    def zigzagLevelOrder_2(self, root: [TreeNode]) -> [[int]]:
+        # **使用BFS，要非常熟練這個模板 -> q.pop()/if node.left/if node.right**
+        # 第一層是左右
+        # 第二層是右左
+        # 第三層是左右
+
+        # **edge case**
+        if not root:
+            return
+
+        res = []
+        q = [root]
+        depth = 0
+        while q:
+            depth = depth + 1
+            tmp = []
+            new_q = []
+            # 使用_ in range(len(q)) and pop的方式是為了要倒敘放入queue
+            # 使用node in q -> 正序放入queue
+            for _ in range(len(q)):
+                node = q.pop()
+                val = node.val
+                tmp.append(val)
+
+                # count % 2 == 0 -> 先左在右
+                if depth % 2 == 1:
+                    if node.left:
+                        new_q.append(node.left)
+                    if node.right:
+                        new_q.append(node.right)
+                else:
+                    if node.right:
+                        new_q.append(node.right)
+                    if node.left:
+                        new_q.append(node.left)
+
+            res.append(tmp)
+            q = new_q
+        print(res)
+        return res
+
 
 if __name__ == '__main__':
     solution = Solution()
     buildTree = BuildTree()
     root = buildTree.deserialize([3,9,"N","N",20, 15,"N","N",7,"N","N"])
-    solution.zigzagLevelOrder(root= root)
+    solution.zigzagLevelOrder_2(root= root)
 

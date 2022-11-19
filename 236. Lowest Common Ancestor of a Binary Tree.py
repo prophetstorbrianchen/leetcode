@@ -32,6 +32,29 @@ class Solution:
             else:
                 return right_tree
 
+    def lowestCommonAncestor_2(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        # 此題要找最小祖先，會有下列幾種case
+        # 1.root即為p or q -> 那p or q即是最小祖先
+        # 2.p和q分別在左右子樹 -> p和q的root為共同最小祖先 -> 能在同時找到p和q在不同子樹
+        # 3.p和q分別在同一子樹 -> 那就是看p or q誰在上面，在上面的即是最小祖先 -> 只能在一子樹找到p or q，另一子樹為None
+
+        # edge case -> 防空樹
+        if not root:
+            return root
+
+        if root == p or root == q:
+            return root
+
+        left_tree = self.lowestCommonAncestor_2(root.left, p, q)
+        right_tree = self.lowestCommonAncestor_2(root.right, p, q)
+
+        if left_tree and right_tree:
+            return root
+        elif left_tree:
+            return left_tree
+        else:
+            return right_tree
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -42,5 +65,5 @@ if __name__ == '__main__':
     root, p, q = TreeNode(1), TreeNode(2), TreeNode(3)
     root.left = p
     root.right = q
-    result = solution.lowestCommonAncestor(root= root, p= p, q= q)
+    result = solution.lowestCommonAncestor_2(root= root, p= p, q= q)
     print(result)

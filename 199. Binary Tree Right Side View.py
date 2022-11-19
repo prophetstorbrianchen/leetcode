@@ -60,11 +60,38 @@ class Solution:
         print(res)
         return res
 
+    def rightSideView_2(self, root: [TreeNode]) -> [int]:
+        # 使用BFS
+        # BFS的基礎，可以和103比較一下for迴圈的不同
+        # 使用_ in range(len(q)) and pop的方式是為了要倒敘放入queue
+        # 使用node in q -> 正序放入queue
+
+        if not root:
+            return root
+
+        q = [root]
+        res = []
+        while q:
+            res.append(q[-1].val)
+            new_q = []
+            for node in q:
+                # 左子樹
+                if node.left:
+                    new_q.append(node.left)
+
+                # 右子樹
+                if node.right:
+                    new_q.append(node.right)
+
+            q = new_q
+
+        print(res)
+        return res
 
 
 if __name__ == '__main__':
     solution = Solution()
     buildTree = BuildTree()
     root = buildTree.deserialize([1,2,"N",5,"N","N",3,"N",4,"N","N"])
-    solution.rightSideView(root= root)
+    solution.rightSideView_2(root= root)
 

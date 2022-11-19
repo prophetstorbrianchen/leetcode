@@ -44,9 +44,36 @@ class Solution:
         print(res)
         return res
 
+    def pathSum_2(self, root: [TreeNode], targetSum: int) -> [[int]]:
+        # dfs + combination sum
+        # 記住他要從頭走到尾才行，所以一定要加入特殊條件
+
+        def dfs(node, t, path):
+            # base case
+            if not node:
+                return
+
+            val = node.val
+            new_path = path + [val]
+
+            # 要從頭走到尾才行，所以表示最後的左右子樹必定為空
+            if sum(new_path) == t and not node.left and not node.right:
+                res.append(new_path)
+
+            # 進左子樹
+            dfs(node.left, t, new_path)
+            # 進右子樹
+            dfs(node.right, t, new_path)
+
+        res = []
+        dfs(root, targetSum, [])
+
+        print(res)
+        return res
+
 
 if __name__ == '__main__':
     solution = Solution()
     buildTree = BuildTree()
     root = buildTree.deserialize([1,2,"N","N",2,"N","N"])
-    solution.pathSum(root= root, targetSum= 3)
+    solution.pathSum_2(root= root, targetSum= 3)

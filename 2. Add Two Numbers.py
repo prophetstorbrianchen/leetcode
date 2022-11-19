@@ -50,6 +50,45 @@ class Solution:
         return dummy.next
 
 
+
+
+
+
+
+
+
+
+    def addTwoNumbers_2(self, l1: [ListNode], l2: [ListNode]) -> [ListNode]:
+        # 這種bit的加法核心概念 -> 餘數和carry位
+        # 因為link list的特性 -> 要防長短不一
+        # 因為link list的特性 -> 當原本link list一樣長時，但有carry位 -> 產生新的一個位數
+        # 每次位數加總完的結果，都會產生一個node來串接，形成新的一個list
+
+        dummy = ListNode()
+        tail = dummy
+
+        carry = 0
+        # while判斷加carry -> 當只有多carry位時的情況
+        while l1 or l2 or carry:
+            # 防長短不一
+            val_1 = l1.val if l1 else 0
+            val_2 = l2.val if l2 else 0
+
+            # 開始做加法
+            new_val = (val_1 + val_2 + carry) % 10
+            carry = (val_1 + val_2 + carry) // 10
+            node = ListNode(new_val)
+            tail.next = node
+
+            # 更新位址，大家都向後進一位
+            # 必須要防長短不一
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
+            tail = tail.next
+
+        return dummy.next
+
+
 if __name__ == '__main__':
     solution = Solution()
     build_link_list = build_link_list()

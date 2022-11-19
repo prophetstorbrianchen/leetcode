@@ -69,6 +69,37 @@ class Solution:
 
 
 
+
+
+
+
+
+    def widthOfBinaryTree_2(self, root: [TreeNode]) -> int:
+        # 因為這題要用滿樹去看才會知道最大的寬度 -> BFS + Math
+        # 假設root編號為1
+        # 左leaf -> 2 -> (1*2), 右leaf -> 2 -> (1*2 + 1)
+        # 寬度為同一queue中，最後面的編號扣掉最前面的編號 -> q[-1][1] - q[0][1]
+
+        q = [(root, 1)]
+        max_width = 0
+        while q:
+            max_width = max(max_width, q[-1][1] - q[0][1] + 1)
+            new_q = []
+            for node, index in q:
+                # left tree
+                if node.left:
+                    new_q.append((node.left, index * 2))
+
+                # right tree
+                if node.right:
+                    new_q.append((node.right, index * 2 + 1))
+
+            q = new_q
+
+        print(max_width)
+        return max_width
+
+
 if __name__ == '__main__':
     solution = Solution()
     buildTree = BuildTree()

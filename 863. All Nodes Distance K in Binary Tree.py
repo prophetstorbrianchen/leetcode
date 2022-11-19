@@ -1,3 +1,5 @@
+import collections
+
 from base_function import BuildTree
 from collections import deque
 from collections import defaultdict
@@ -70,6 +72,52 @@ class Solution:
         print(res)
         return res
 
+    def distanceK_2(self, root: TreeNode, target: TreeNode, k: int) -> [int]:
+        # 把樹建成圖表 -> DFS -> 要記每個node的root,左子樹,右子樹的val
+        # 因為要看某一node和距離k的點 -> 直接想到BFS的擴散 -> 距離K表示從node擴散K步
+        # DFS那邊有不小心寫錯 -> 要在默寫一次
+
+        map_dict = collections.defaultdict(list)
+
+        def dfs(node, parent):
+            if not node:
+                return
+
+            val = node.val
+
+            if parent != -1:
+                map_dict[val].append(parent)
+
+            if node.left:
+                map_dict[val].append(node.left.val)
+                dfs(node.left, val)
+
+            if node.right:
+                map_dict[val].append(node.right.val)
+                dfs(node.right, val)
+
+        dfs(root, -1)
+        print(map_dict)
+
+        # BFS
+        q = [(target.val, 0)]
+        seen = set()
+        seen.add(target.val)
+        res = []
+        while q:
+            new_q = []
+            for node, depth in q:
+                if depth == k:
+                    res.append(node)
+                for item in map_dict[node]:
+                    if item not in seen:
+                        new_q.append((item, depth + 1))
+                        seen.add(item)
+            q = new_q
+
+        print(res)
+        return res
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -81,4 +129,4 @@ if __name__ == '__main__':
     node5.left, node5.right = node6, node7
     node3.left, node3.right = node8, node9
 
-    solution.distanceK(root=node1, target = node2, k = 2)
+    solution.distanceK_2(root=node1, target = node2, k = 2)
