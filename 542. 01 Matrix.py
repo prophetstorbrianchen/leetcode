@@ -42,6 +42,71 @@ class Solution:
         return dist
 
 
+
+    def updateMatrix_2(self, mat: [[int]]) -> [[int]]:
+        # 這題比較特別，要建立一張新的表都是0的matrix -> 用來計算1的count -> 這方法其實非常常用到(多練習)
+        # 必須將0加入queue中開始向4方擴散 -> 找到1，就更新在新的表格上面，做累加的動作
+
+        # 土法煉鋼法
+        """
+        dict = []
+        for i in range(len(mat)):
+            tmp = []
+            for j in range(len(mat[0])):
+                tmp.append(0)
+            dict.append(tmp)
+        """
+
+        # 乾淨寫法
+        m, n = len(mat), len(mat[0])
+        dict = [[0] * n for _ in range(m)]
+
+
+        # 找是0的位置，放入queue中
+        zeroes_pos = []
+        for r in range(m):
+            for c in range(n):
+                if mat[r][c] == 0:
+                    zeroes_pos.append((r, c))
+
+        q = collections.deque(zeroes_pos)
+        seen = set(zeroes_pos)
+
+        # BFS
+        # 更新dict的內容
+        while q:
+            r, c = q.popleft()
+            # 4方擴散
+            # 上
+            if 0 <= r - 1 < m and 0 <= c < n and (r - 1, c) not in seen:
+                # 因為0都已經被挑到queue裡面了，所以剩餘的mat中必定為1
+                # mat[i][j] is either 0 or 1 -> 題目有限制
+                dict[r - 1][c] = dict[r][c] + 1
+                q.append((r - 1, c))
+                seen.add((r - 1, c))
+
+            # 下
+            if 0 <= r + 1 < m and 0 <= c < n and (r + 1, c) not in seen:
+                dict[r + 1][c] = dict[r][c] + 1
+                q.append((r + 1, c))
+                seen.add((r + 1, c))
+
+            # 左
+            if 0 <= r < m and 0 <= c - 1 < n and (r, c - 1) not in seen:
+                dict[r][c - 1] = dict[r][c] + 1
+                q.append((r, c - 1))
+                seen.add((r, c - 1))
+
+            # 右
+            if 0 <= r < m and 0 <= c + 1 < n and (r, c + 1) not in seen:
+                dict[r][c + 1] = dict[r][c] + 1
+                q.append((r, c + 1))
+                seen.add((r, c + 1))
+
+        print(dict)
+        return dict
+
+
 if __name__ == '__main__':
     solution = Solution()
-    solution.updateMatrix(mat = [[0,0,0],[0,1,0],[1,1,1]])
+    solution.updateMatrix_2(mat = [[0,0,0],[0,1,0],[1,1,1]])

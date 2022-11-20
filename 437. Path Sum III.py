@@ -47,6 +47,82 @@ class Solution:
 
         return total_count
 
+    def pathSum_2(self, root: [TreeNode], targetSum: int) -> int:
+        # 此題不需要從root開始，也不需要從leaf結束 -> 中間的點都有可能只是過程
+        # 要從尾巴向前加 -> 如果剛好為sum，count + 1
+        # 此題為變形的backtracking -> 由下把值給往上船
+        # 此題為遞迴的return
+
+        def dfs(curNode, ts, curPath):
+            if not curNode:
+                return 0
+
+            # backtracking的模板，要進下一層要append
+            curPath.append(curNode.val)
+            pathCount = 0
+
+            pathSum = 0
+            tmp_res = []
+            for i in range(len(curPath) - 1, -1, -1):
+                pathSum = pathSum + curPath[i]
+                tmp_res = tmp_res + [curPath[i]]
+                if pathSum == ts:
+                    res.append(tmp_res)
+                    pathCount = pathCount + 1
+
+            account_pathCount = dfs(curNode.left, ts, curPath) + dfs(curNode.right, ts, curPath)
+            # 回上一層要pop掉
+            curPath.pop()
+
+            return account_pathCount
+
+        # curPath: 目前經過哪幾個點
+        # curNode: 目前走到哪個點
+        # pathCount: 當前的account
+        # pathSum: 經過的總和
+        # res: 看結果是哪幾個node的總和
+
+        res = []
+        dfs(root, targetSum, [])
+        print(res)
+
+        # 看res的第二種方法
+        """
+        def dfs(curNode, ts, curPath):
+            if not curNode:
+                return 0
+
+            # backtracking的模板，要進下一層要append
+            curPath.append(curNode.val)
+            pathCount = 0
+
+            pathSum = 0
+            tmp_res = []
+            for i in range(len(curPath) - 1, -1, -1):
+                pathSum = pathSum + curPath[i]
+                tmp_res.append(curPath[i])
+                if pathSum == ts:
+                    res.append(tmp_res)
+                    pathCount = pathCount + 1
+
+            account_pathCount = pathCount + dfs(curNode.left, ts, curPath) + dfs(curNode.right, ts, curPath)
+            # 回上一層要pop掉
+            tmp_res.pop()
+            curPath.pop()
+
+            return account_pathCount
+
+        # curPath: 目前經過哪幾個點
+        # curNode: 目前走到哪個點
+        # pathCount: 當前的account
+        # pathSum: 經過的總和
+        # res: 看結果是哪幾個node的總和
+
+        res = []
+        total_count = dfs(root, targetSum, [])
+        print(res)
+        return total_count
+        """
 
 if __name__ == '__main__':
     solution = Solution()
