@@ -65,22 +65,45 @@ class Solution:
         print(longest_palindrome)
         return longest_palindrome
 
+    def longestPalindrome_3(self, s: str) -> str:
+        # two pointer
+        # 判斷回文的function，並每次回傳最長得出來
+        # 要分成odd/even來判斷
 
+        def isPalindrome(string, l, r):
+            # keep the max Palindrome length
+            max_palindrome = ""
+            while 0 <= l and r < len(string) and string[l] == string[r]:
+                tmp = string[l:r + 1]
+                if len(tmp) > len(max_palindrome):
+                    max_palindrome = tmp
+                l = l - 1
+                r = r + 1
 
+            # return s[l + 1: r] -> 這個會比較快
+            return max_palindrome
 
+        # odd case
+        odd_max = ""
+        for i in range(len(s)):
+            tmp_palindrome = isPalindrome(s, i, i)
+            if len(tmp_palindrome) > len(odd_max):
+                odd_max = tmp_palindrome
 
+        # even case
+        even_max = ""
+        for i in range(len(s)):
+            tmp_palindrome = isPalindrome(s, i, i + 1)
+            if len(tmp_palindrome) > len(even_max):
+                even_max = tmp_palindrome
 
-
-
-
-
-
-
-
-
-
+        # get the max palindrome
+        if len(odd_max) > len(even_max):
+            return odd_max
+        else:
+            return even_max
 
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.longestPalindrome_2(s = "cbbs")
+    solution.longestPalindrome_3(s = "cbbs")
