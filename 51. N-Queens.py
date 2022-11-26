@@ -1,3 +1,7 @@
+import collections
+import copy
+
+
 class Solution:
     # hint
     # 以row為主體時，使用col/posDiag/negDiag來記錄位置，使quuen不能互撞
@@ -57,7 +61,53 @@ class Solution:
         print(res)
         return res
 
+    def solveNQueens_2(self, n: int) -> [[str]]:
+        # 皇后的走法有4種 -> row/col/posDiag/negDiag -> row走完，意味著col/posDiag/negDiag也填完了
+        # 每放入一皇后 -> 上面說的hash table就要更新
+
+        col = set()
+        posDiag = set()
+        negDiag = set()
+
+        res = []
+        # 建立board
+        board = [["."] * n for i in range(n)]
+
+        def dfs(r):
+            if r == n:
+                # 把board的值給拿出來
+                # 不能直接使用res.append(board)，但可以使用res.append(copy.deepcopy(board))
+                copy = ["".join(row) for row in board]
+                res.append(copy)
+                return
+
+            for c in range(n):
+                if c in col or (r - c) in posDiag or (r + c) in negDiag:
+                    continue
+                else:
+                    # 準備進下一層
+                    col.add(c)
+                    posDiag.add((r - c))
+                    negDiag.add((r + c))
+                    board[r][c] = "Q"
+
+                    # 進入下一層
+                    if dfs(r + 1):
+                        return True
+
+                    # 回到上一層
+                    col.remove(c)
+                    posDiag.remove((r - c))
+                    negDiag.remove((r + c))
+                    board[r][c] = "."
+
+            return False
+
+        # 從row=0開始看
+        dfs(0)
+        print(res)
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.solveNQueens(n = 4)
+    solution.solveNQueens_2(n = 4)
