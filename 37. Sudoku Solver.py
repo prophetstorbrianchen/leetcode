@@ -153,8 +153,45 @@ class Solution:
         print(board)
         """
 
+    def solveSudoku_2(self, board: [[str]]) -> None:
+        # 使用36題的結果 -> hash_table 會保留存在的數字 -> 可以記住有哪些空格是empty的 -> self.empty = [(0,0), (2,1), ...]
+        # 使用dfs去填這些空格，直到填完為止 -> backtracking
+        # 把2D轉成1D的backtracking
+
+        self.isValidSudoku(board)
+
+        def dfs(iter):
+            if iter == len(self.empty):
+                return True
+
+            # 必須從list 0開始，因為你的iter為0
+            r, c = self.empty[iter]
+
+            for n in "123456789":
+                if n not in self.row_table[r] and n not in self.col_table[c] and n not in self.square_table[(r // 3, c // 3)]:
+                    # 為進下一層做準備
+                    board[r][c] = n
+                    self.row_table[r].add(n)
+                    self.col_table[c].add(n)
+                    self.square_table[(r // 3, c // 3)].add(n)
+
+                    # 進下一層
+                    # **會忘記要return true** -> 如果是正確的答案，就會一直往下，直到沒找到答案，就會回到上層，然後把之前add的都remove掉
+                    if dfs(iter + 1):
+                        return True
+
+                    # 回到上一層
+                    board[r][c] = "."
+                    self.row_table[r].remove(n)
+                    self.col_table[c].remove(n)
+                    self.square_table[(r // 3, c // 3)].remove(n)
+
+            # 1~9都沒找到答案，回到上一層
+            return False
+
+        dfs(0)
 
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.solveSudoku(board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]])
+    solution.solveSudoku_2(board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]])

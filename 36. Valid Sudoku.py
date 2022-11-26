@@ -68,11 +68,41 @@ class Solution:
         print(True)
         return True
 
+    def isValidSudoku_2(self, board: [[str]]) -> bool:
+        # 必須在row的地方不能重複
+        # 必須在col的低方不能重複
+        # 必須在9個3*3的格子中不能重複
+        # 需要有3個hash table來記錄 -> 都沒有重複就是合法，有重複就是非法
+
+        hash_row = collections.defaultdict(set)
+        hash_col = collections.defaultdict(set)
+        hash_square = collections.defaultdict(set)
+
+        rows = len(board)
+        cols = len(board[0])
+
+        for r in range(rows):
+            for c in range(cols):
+                # **會忘記這個**
+                if board[r][c] == ".":
+                    continue
+
+                if board[r][c] not in hash_row[r] and board[r][c] not in hash_col[c] and board[r][c] not in hash_square[(r // 3, c // 3)]:
+                    hash_row[r].add(board[r][c])
+                    hash_col[c].add(board[r][c])
+                    hash_square[(r // 3, c // 3)].add(board[r][c])
+                else:
+                    print(False)
+                    return False
+
+        print(True)
+        return True
+
 
 if __name__ == '__main__':
     solution = Solution()
     solution.isValidSudoku(board =
-[["8","3",".",".","7",".",".",".","."]
+[["5","3",".",".","7",".",".",".","."]
 ,["6",".",".","1","9","5",".",".","."]
 ,[".","9","8",".",".",".",".","6","."]
 ,["8",".",".",".","6",".",".",".","3"]

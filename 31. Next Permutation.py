@@ -34,6 +34,49 @@ class Solution:
         nums.reverse()
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def nextPermutation_2(self, nums: [int]) -> None:
+        # 找到升序 -> 交換
+        # 交換是從後面開始看，第一個比i大的就交換
+        # 對升序後面的list做reverse
+
+        i = len(nums) - 2
+
+        while i >= 0:
+            # 找升序
+            if nums[i] < nums[i + 1]:
+                # **從最後一個開始招，找到必須找第一個比i大的，然後交換 -> 而非左又交換，這差很多**
+                # 只要到第i個就可以
+                for j in range(len(nums) - 1, i, -1):
+                    if nums[j] > nums[i]:
+                        nums[i], nums[j] = nums[j], nums[i]
+                        # 做reverse
+                        nums[i+1:] = sorted(nums[i+1:])
+                        print(nums)
+                        return nums
+            else:
+                i = i - 1
+
+        print(nums)
+        return nums.reverse()
+
+
 if __name__ == '__main__':
     solution = Solution()
-    solution.nextPermutation(nums = [1,2,3])
+    solution.nextPermutation_2(nums = [2,3,1])
