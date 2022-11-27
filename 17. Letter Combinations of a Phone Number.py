@@ -35,7 +35,38 @@ class Solution:
         print(res)
         return res
 
+    def letterCombinations_2(self, digits: str) -> [str]:
+        # 最後字串的結果長度必須要和digits一樣
+        # 建立數字和字母的hash table
+        # 排列組合類的backtracking
+        hash_table = {
+            "2": ["a", "b", "c"],
+            "3": ["d", "e", "f"],
+            "4": ["g", "h", "i"],
+            "5": ["j", "k", "l"],
+            "6": ["m", "n", "o"],
+            "7": ["p", "q", "r", "s"],
+            "8": ["t", "u", "v"],
+            "9": ["w", "x", "y", "z"]
+        }
+
+        def dfs(i, res):
+            # 最後字串的結果長度必須要和digits一樣 -> 找到答案
+            if len(res) == len(digits):
+                result.append(res)
+                return
+
+            # 這太神了，我只能模仿
+            for c in hash_table[digits[i]]:
+                dfs(i + 1, res + c)
+
+        result = []
+        # edge case -> digits = ""
+        if digits:
+            dfs(0, "")
+        return result
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.letterCombinations(digits = "25")
+    solution.letterCombinations_2(digits = "23")

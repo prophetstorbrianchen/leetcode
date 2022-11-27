@@ -1,3 +1,6 @@
+import copy
+
+
 class Solution:
     # hint
     # 當open < n 時，只增加open
@@ -33,7 +36,40 @@ class Solution:
         print(res)
         return res
 
+    def generateParenthesis_2(self, n: int) -> [str]:
+        # 往下長的規則與順序
+        # 當左括號小於n時，要增加左括號
+        # 當右括號小於左括號時，要增加右括號
+        # 左右括號數最後必定相等
+        # 把左括想成左子樹
+        # 把右括想成右子樹
+        # backtracking
 
+        def dfs(l, r, res):
+            # base case
+            # 左右括號數最後必定相等 -> 表示找到我們要的
+            if l == r == n:
+                tmp_result.append(copy.deepcopy(res))
+                return
+
+            # 當左括號小於n時，要增加左括號 -> l < n
+            if l < n:
+                # 準備進下一層
+                dfs(l + 1, r, res + ["("])
+
+            # 當右括號小於左括號時，要增加右括號 -> l < n
+            if r < l:
+                dfs(l, r + 1, res + [")"])
+
+        tmp_result = []
+        dfs(0, 0, [])
+
+        result = []
+        # process to string
+        for item in tmp_result:
+            result.append("".join(item))
+
+        return result
 
 
 if __name__ == '__main__':

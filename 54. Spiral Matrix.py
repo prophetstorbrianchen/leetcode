@@ -22,6 +22,7 @@ class Solution:
 
             # from right to left
             # 必須要特別注意上邊是否小於等於下邊
+            # **要記得是up <= down，當由右到左的時候**
             if up <= down:
                 for i in range(right, left - 1, -1):
                     res.append(matrix[down][i])
@@ -29,6 +30,7 @@ class Solution:
 
             # from down to top
             # 必須要特別注意左邊是否小於等於右邊
+            # **要記得是left <= right，當由下到上的時候**
             if left <= right:
                 for i in range(down, up - 1, -1):
                     res.append(matrix[i][left])

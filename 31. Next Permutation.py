@@ -33,24 +33,6 @@ class Solution:
         # 若沒有升序，表示此為最大排序，直接reverse即可
         nums.reverse()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def nextPermutation_2(self, nums: [int]) -> None:
         # 找到升序 -> 交換
         # 交換是從後面開始看，第一個比i大的就交換

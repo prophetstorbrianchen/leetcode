@@ -28,6 +28,27 @@ class Solution:
         print(res)
         return res
 
+    def permute_2(self, nums: [int]) -> [[int]]:
+        # list要滿才是答案 -> P3取1 -> 3! -> 3*2*1
+        # list中的順序可以不固定
+
+        def dfs(res):
+            if len(res) == len(nums):
+                result.append(res)
+
+            for n in nums:
+                # 重複，找下一個數
+                if n in res:
+                    continue
+                else:
+                    # 進下一層
+                    dfs(res + [n])
+
+        result = []
+        dfs([])
+        # print(result)
+        return result
+
 
 if __name__ == '__main__':
     solution = Solution()

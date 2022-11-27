@@ -1,3 +1,5 @@
+import copy
+
 class Solution:
     # hint
     # 我是憑感覺寫出code的，實際上我的是反向解法，跟我note裡化的不太一樣
@@ -22,7 +24,28 @@ class Solution:
         print(res)
         return res
 
+    def subsets_2(self, nums: [int]) -> [[int]]:
+        # 不能有重複地往下走
+
+        def dfs(res):
+            result.append(copy.deepcopy(res))
+
+            for n in nums:
+                # 不重複才能向下走
+                if n not in res:
+                    # 進入下一層
+                    res.append(n)
+                    dfs(res)
+                    res.pop()
+                else:
+                    # 重複了，回上層
+                    return
+
+        result = []
+        dfs([])
+        return result
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.subsets(nums=[1, 2, 3])
+    solution.subsets_2(nums=[1, 2, 3])
