@@ -124,6 +124,33 @@ class Solution:
         return total_count
         """
 
+    def pathSum_3(self, root: [TreeNode], targetSum: int) -> int:
+        def dfs(curNode, ts, curPath):
+            # base case
+            if not curNode:
+                return 0
+
+            curPath.append(curNode.val)
+            pathSum = 0
+            pathCount = 0
+            # **必須要由下往上算**
+            # 計算count數，但也可以記路徑
+            for i in range(len(curPath) - 1, -1, -1):
+                pathSum = pathSum + curPath[i]
+                if pathSum == ts:
+                    pathCount = pathCount + 1
+
+            # 進下一層
+            total_count = pathCount + dfs(curNode.left, ts, curPath) + dfs(curNode.right, ts, curPath)
+            curPath.pop()
+
+            return total_count
+
+        total = dfs(root, targetSum, [])
+        print(total)
+        return total
+
+
 if __name__ == '__main__':
     solution = Solution()
     buildTree = BuildTree()
