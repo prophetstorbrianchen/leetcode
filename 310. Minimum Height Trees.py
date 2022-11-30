@@ -78,7 +78,45 @@ class Solution:
         print(q)
         return q
 
+    def findMinHeightTrees_3(self, n: int, edges: [[int]]) -> [int]:
+        # 建立graph -> dict(set)
+        # 找出degree為1的node -> 迭代graph -> remove from graph -> check degree是否為1
+        # degree為1 -> tmp append
+        # tmp assign 給q, tmp再次變空[]
+
+        # 建圖
+        graph = collections.defaultdict(set)
+        for u, v in edges:
+            graph[v].add(u)
+            graph[u].add(v)
+
+        print(graph)
+
+        q = []
+        # 找出degree 1 -> 放入q中
+        for key, value in graph.items():
+            if len(value) == 1:
+                q.append(key)
+
+        # queue = collections.deque(q)
+        # BFS -> 改寫看看
+        tmp = []
+        while True:
+            for node in q:
+                for n in graph[node]:
+                    graph[n].remove(node)
+                    if len(graph[n]) == 1:
+                        tmp.append(n)
+
+            if not tmp:
+                break
+
+            tmp, q = [], tmp
+
+        print(q)
+        return q
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.findMinHeightTrees_2(n = 4, edges = [[1,0],[1,2],[1,3]])
+    solution.findMinHeightTrees_3(n = 4, edges = [[1,0],[1,2],[1,3]])
