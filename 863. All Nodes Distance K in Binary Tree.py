@@ -118,6 +118,53 @@ class Solution:
         print(res)
         return res
 
+    def distanceK_3(self, root: TreeNode, target: TreeNode, k: int) -> [int]:
+        def dfs(node, parent):
+            if not node:
+                return
+
+            val = node.val
+
+            # parent
+            if parent != -1:
+                hash_table[val].append(parent)
+
+            # left
+            if node.left:
+                hash_table[val].append(node.left.val)
+                dfs(node.left, val)
+
+            # right
+            if node.right:
+                hash_table[val].append(node.right.val)
+                dfs(node.right, val)
+
+        hash_table = collections.defaultdict(list)
+        dfs(root, -1)
+        print(hash_table)
+
+        # BFS
+        # 把target放入q中
+        q = collections.deque([])
+        q.append((target.val, 0))
+
+        seen = set()
+        seen.add(target.val)
+
+        res = []
+        while q:
+            num, count = q.popleft()
+            if count == k:
+                res.append(num)
+
+            for item in hash_table[num]:
+                if item not in seen:
+                    q.append((item, count + 1))
+                    seen.add(item)
+
+        print(res)
+        return res
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -129,4 +176,4 @@ if __name__ == '__main__':
     node5.left, node5.right = node6, node7
     node3.left, node3.right = node8, node9
 
-    solution.distanceK_2(root=node1, target = node2, k = 2)
+    solution.distanceK_3(root=node1, target = node2, k = 2)
