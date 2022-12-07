@@ -41,8 +41,23 @@ class Solution:
         print(max_len)
         return max_len
 
+    def lengthOfLongestSubstring_3(self, s: str) -> int:
+        max_string = ""
+        string = ""
+        for i, c in enumerate(s):
+            if c not in string:
+                string = string + c
+                if len(max_string) <= len(string):
+                    max_string = string
+            else:
+                duplicate_index = string.index(c)
+                string = string[duplicate_index + 1:] + c
+
+        # print(max_string)
+        return len(max_string)
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.lengthOfLongestSubstring(s = "abcabcbb")
-    solution.lengthOfLongestSubstring_2(s = " ")
+    solution.lengthOfLongestSubstring_3(s = "pwwkew")
+    # solution.lengthOfLongestSubstring_2(s = " ")

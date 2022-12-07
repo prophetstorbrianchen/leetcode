@@ -1,3 +1,6 @@
+import collections
+
+
 class Solution:
     # hint
     # 我這題使用list去做會超出界，r = r + 1 時 -> 其實也不用r = r + 1 去做，因為r每步都在更新
@@ -92,8 +95,28 @@ class Solution:
         print(longest_len)
         return longest_len
 
+    def characterReplacement_3(self, s: str, k: int) -> int:
+        hash_table = collections.defaultdict(int)
+        max_len = 0
+        l = 0
+        for r, c in enumerate(s):
+            windows_length = r - l + 1
+            hash_table[c] = hash_table[c] + 1
+            # **別忘記可以這樣用**
+            max_value = max(hash_table.values())
+
+            if windows_length - max_value <= k:
+                max_len = max(max_len, windows_length)
+            else:
+                origin_char = s[l]
+                hash_table[origin_char] = hash_table[origin_char] - 1
+                l = l + 1
+
+        # print(max_len)
+        return max_len
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.characterReplacement(s = "AABABBA", k = 1)
-    solution.characterReplacement_2(s = "ABAB", k = 2)
+    solution.characterReplacement_3(s = "AABABBA", k = 1)
+    # solution.characterReplacement_2(s = "ABAB", k = 2)

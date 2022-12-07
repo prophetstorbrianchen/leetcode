@@ -64,8 +64,67 @@ class Solution:
         print(res)
         return res
 
+    def threeSum_hash_table(self, nums: [int]) -> [[int]]:
+        # 使用hash table
+        nums.sort()
+        result = []
+        for i, n in enumerate(nums):
+            two_sum = 0 - n
+            seen = {}
+            for j in range(i + 1, len(nums)):
+                # b為nums[j]所需要的值 -> 記載hash table中 -> 若是下一次的nums[j]剛好為b表示找到了
+                b = two_sum - nums[j]
+
+                # 如果需要nums[j]的值沒有在seen裡面 -> 把b值和j的index存起來
+                if nums[j] not in seen:
+                    seen[b] = j
+                else:
+                    res = [nums[j], b]
+                    res.insert(0, n)
+
+                    if res not in result:
+                        result.append(res)
+
+        # print(result)
+        return result
+
+    def threeSum_two_pointer(self, nums: [int]) -> [[int]]:
+        # use two pointer
+        nums.sort()
+
+        result = []
+        for i, n in enumerate(nums):
+            # **去重 -> 要使用後面比前面的方式來做，注意要是 i > 0 **
+            if i > 0 and nums[i - 1] == n:
+                continue
+
+            l = i + 1
+            r = len(nums) - 1
+
+            while l < r:
+                if (n + nums[l] + nums[r]) < 0:
+                    l = l + 1
+                elif (n + nums[l] + nums[r]) > 0:
+                    r = r - 1
+                else:
+                    # find
+                    """
+                    if [n, nums[l], nums[r]] in result:
+                        pass
+                    else:
+                        result.append([n, nums[l], nums[r]])
+                    """
+                    result.append([n, nums[l], nums[r]])
+                    l = l + 1
+                    # **這邊很重要，容易忘記 -> 去除重複的**
+                    while l < r and nums[l] == nums[l - 1]:
+                        l = l + 1
+
+        # print(result)
+        return result
+
 
 if __name__ == '__main__':
     solution = Solution()
-    # solution.threeSum(nums = [3,0,-2,-1,1,2])
-    solution.threeSum_2(nums = [2,0,-2,-5,-5,-3,2,-4])
+    solution.threeSum_two_pointer(nums = [0,0,0])
+    # solution.threeSum_hash_table(nums = [2,0,-2,-5,-5,-3,2,-4])
