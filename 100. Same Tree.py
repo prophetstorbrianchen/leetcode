@@ -20,6 +20,16 @@ class Solution:
         # print(dfs(p, q))
         return dfs(p, q)
 
+    def isSameTree_2(self, p: [TreeNode], q: [TreeNode]) -> bool:
+        if not p and not q:
+            return True
+
+        if not p or not q:
+            return False
+
+        if p.val == q.val and self.isSameTree_2(p.left, q.left) and self.isSameTree_2(p.right, q.right):
+            return True
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -32,3 +42,4 @@ if __name__ == '__main__':
     root_q.right = node3_q
 
     solution.isSameTree(p = root_p, q = root_q)
+    solution.isSameTree_2(p=root_p, q=root_q)

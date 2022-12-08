@@ -63,6 +63,29 @@ class Solution:
 
         return dummy.next
 
+    def removeNthFromEnd_3(self, head: [ListNode], n: int) -> [ListNode]:
+        # 此方法跟上面不同，不過使用快慢指針應該才是對的
+        # 看總長多長
+        # 使用扣的，算出要停在哪邊
+
+        f = head
+        count = 0
+        while f:
+            count = count + 1
+            f = f.next
+
+        # **link list的題目使用dummy可以避免不必要的麻煩***
+        dummy = ListNode()
+        dummy.next = head
+        tail = dummy
+        for _ in range(count - n):
+            tail = tail.next
+
+        tail.next = tail.next.next
+
+        # print(head)
+        return dummy.next
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -72,5 +95,6 @@ if __name__ == '__main__':
     list_3_node.next = list_4_node
     list_4_node.next = list_5_node
 
-    solution.removeNthFromEnd(head=list_1_node, n=2)
-    solution.removeNthFromEnd_2(head=list_1_node, n=2)
+    #solution.removeNthFromEnd(head=list_1_node, n=2)
+    #solution.removeNthFromEnd_2(head=list_1_node, n=2)
+    solution.removeNthFromEnd_3(head=list_1_node, n=5)

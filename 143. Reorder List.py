@@ -96,6 +96,55 @@ class Solution:
         # print(dummy.next)
         head = dummy.next
 
+    def reorderList_3(self, head: [ListNode]) -> None:
+        # 切中間
+        # 後半部reverse
+        # merge
+
+        # --mid--
+        s = head
+        f = head.next
+        while f and f.next:
+            s = s.next
+            f = f.next.next
+
+        # head 分成前後2段
+        list2 = s.next
+        s.next = None
+        list1 = head
+
+        # --針對list2做reverse -> prev為reverse的結果--
+        prev = None
+
+        while list2:
+            temp = list2.next
+            list2.next = prev
+            prev = list2
+            list2 = temp
+
+        reverse_list2 = prev
+
+        # --做merge--
+        dummy = ListNode()
+        tail = dummy
+
+        while list1 and reverse_list2:
+            tail.next = list1
+            list1 = list1.next
+            tail = tail.next
+
+            tail.next = reverse_list2
+            reverse_list2 = reverse_list2.next
+            tail = tail.next
+
+        if list1:
+            tail.next = list1
+        else:
+            tail.next = reverse_list2
+
+        print(dummy.next)
+        head = dummy.next
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -107,3 +156,4 @@ if __name__ == '__main__':
 
     solution.reorderList(head=list_1_node)
     solution.reorderList_2(head=list_1_node)
+    solution.reorderList_3(head=list_1_node)

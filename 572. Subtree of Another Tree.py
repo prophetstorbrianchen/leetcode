@@ -25,6 +25,27 @@ class Solution:
             return False
         return dfs(root, subRoot) or self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
 
+    def isSubtree_2(self, root: [TreeNode], subRoot: [TreeNode]) -> bool:
+        def dfs(r, sub_r):
+            if not r and not sub_r:
+                return True
+
+            if not r or not sub_r:
+                return False
+
+            if r.val == sub_r.val and dfs(r.left, sub_r.left) and dfs(r.right, sub_r.right):
+                return True
+
+        if not root and not subRoot:
+            return True
+        if not root or not subRoot:
+            return False
+        # **記得是or，只要一個對就對了**
+        if dfs(root, subRoot) or self.isSubtree_2(root.left, subRoot) or self.isSubtree_2(root.right, subRoot):
+            return True
+        else:
+            return False
+
 
 if __name__ == '__main__':
     solution = Solution()
