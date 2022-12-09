@@ -32,10 +32,27 @@ class Solution:
         root.left = self.buildTree(preorder_left, inorder_left)
         root.right = self.buildTree(preorder_right, inorder_right)
 
+        return root
+
+    def buildTree_2(self, preorder: [int], inorder: [int]) -> [TreeNode]:
+        if not preorder and not inorder:
+            return None
+
+        val = preorder[0]
+        root = TreeNode(val)
+        root_inorder_index = inorder.index(val)
+
+        left_preorder = preorder[1: root_inorder_index + 1]
+        right_preorder = preorder[1 + root_inorder_index:]
+        left_inorder = inorder[:root_inorder_index]
+        right_inorder = inorder[root_inorder_index + 1:]
+
+        root.left = self.buildTree_2(left_preorder, left_inorder)
+        root.right = self.buildTree_2(right_preorder, right_inorder)
 
         return root
 
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.buildTree(preorder = [3,9,20,15,7], inorder = [9,3,15,20,7])
+    solution.buildTree_2(preorder = [3,9,20,15,7], inorder = [9,3,15,20,7])

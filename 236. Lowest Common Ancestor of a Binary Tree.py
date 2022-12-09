@@ -55,6 +55,27 @@ class Solution:
         else:
             return right_tree
 
+    def lowestCommonAncestor_3(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        def dfs(r):
+            if not r:
+                return None
+
+            if r == p or r == q:
+                return r
+
+            left = dfs(r.left)
+            right = dfs(r.right)
+
+            if left and right:
+                return r
+            else:
+                if left:
+                    return left
+                else:
+                    return right
+
+        return dfs(root)
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -65,5 +86,5 @@ if __name__ == '__main__':
     root, p, q = TreeNode(1), TreeNode(2), TreeNode(3)
     root.left = p
     root.right = q
-    result = solution.lowestCommonAncestor_2(root= root, p= p, q= q)
+    result = solution.lowestCommonAncestor_3(root= root, p= p, q= q)
     print(result)

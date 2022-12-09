@@ -1,5 +1,6 @@
 from base_function import BuildTree
 from collections import deque
+import collections
 
 
 class TreeNode:
@@ -111,10 +112,46 @@ class Solution:
         print(res)
         return res
 
+    def zigzagLevelOrder_bfs(self, root: [TreeNode]) -> [[int]]:
+        if not root:
+            return []
+
+        q = collections.deque()
+        q.append(root)
+
+        result = []
+        depth = 0
+        while q:
+            depth = depth + 1
+            tmp = []
+            new_q = []
+
+            if depth % 2 == 0:
+                for node in q:
+                    tmp.append(node.val)
+                    if node.right:
+                        new_q.append(node.right)
+                    if node.left:
+                        new_q.append(node.left)
+            else:
+                for i in range(len(q) - 1, -1, -1):
+                    node = q[i]
+                    tmp.append(node.val)
+                for node in q:
+                    if node.right:
+                        new_q.append(node.right)
+                    if node.left:
+                        new_q.append(node.left)
+
+            result.append(tmp)
+            q = new_q
+        # print(result)
+        return result
+
 
 if __name__ == '__main__':
     solution = Solution()
     buildTree = BuildTree()
     root = buildTree.deserialize([3,9,"N","N",20, 15,"N","N",7,"N","N"])
-    solution.zigzagLevelOrder_2(root= root)
+    solution.zigzagLevelOrder_bfs(root= root)
 

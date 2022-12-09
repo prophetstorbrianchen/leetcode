@@ -1,3 +1,6 @@
+import collections
+
+
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -63,6 +66,46 @@ class Solution:
 
         return result
 
+    def levelOrder_dfs(self, root: [TreeNode]) -> [[int]]:
+        def dfs(r, d):
+            if not r:
+                return
+
+            val = r.val
+            hash_dict[d].append(val)
+
+            dfs(r.left, d + 1)
+            dfs(r.right, d + 1)
+
+        hash_dict = collections.defaultdict(list)
+        depth = 0
+        dfs(root, depth)
+        # print(list(hash_dict.values()))
+        return list(hash_dict.values())
+
+    def levelOrder_bfs(self, root: [TreeNode]) -> [[int]]:
+        q = collections.deque()
+        q.append(root)
+
+        result = []
+        while q:
+            new_q = []
+            tmp = []
+            for node in q:
+                q.popleft()
+                tmp.append(node.val)
+
+                if node.left:
+                    new_q.append(node.left)
+
+                if node.right:
+                    new_q.append(node.right)
+
+            result.append(tmp)
+            q = new_q
+        # print(result)
+        return result
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -73,4 +116,6 @@ if __name__ == '__main__':
     node3_p.right = node5_p
 
     # solution.levelOrder(root = root_p)
-    solution.levelOrder_2(root=root_p)
+    # solution.levelOrder_2(root=root_p)
+    # solution.levelOrder_dfs(root=root_p)
+    solution.levelOrder_bfs(root=root_p)

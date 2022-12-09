@@ -46,6 +46,21 @@ class Solution:
         lower = float("-inf")
         return dfs(root, upper, lower)
 
+    def isValidBST_3(self, root: [TreeNode]) -> bool:
+        def dfs(r, u, l):
+            if not r:
+                return True
+
+            if l < r.val < u and dfs(r.left, r.val, l) and dfs(r.right, u, r.val):
+                return True
+            else:
+                return False
+
+        upper = float("inf")
+        lower = float("-inf")
+        # print(dfs(root, upper, lower))
+        return dfs(root, upper, lower)
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -57,5 +72,5 @@ if __name__ == '__main__':
     root_q.left = node2_q
     root_q.right = node3_q
 
-    solution.isValidBST(root = root_p)
-    solution.isValidBST_2(root=root_p)
+    #solution.isValidBST(root = root_p)
+    solution.isValidBST_3(root=root_p)

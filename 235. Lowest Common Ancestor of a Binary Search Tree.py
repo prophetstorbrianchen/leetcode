@@ -46,6 +46,21 @@ class Solution:
                 # p和q在不同一邊
                 return root
 
+    def lowestCommonAncestor_3(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        while root:
+            if p == root or q == root:
+                return root
+
+            if (p.val > root.val and q.val < root.val) or (p.val < root.val and q.val > root.val):
+                return root
+            else:
+                if p.val < root.val and q.val < root.val:
+                    root = root.left
+                elif p.val > root.val and q.val > root.val:
+                    root = root.right
+                else:
+                    return root
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -59,4 +74,5 @@ if __name__ == '__main__':
 
     solution.lowestCommonAncestor(root = root_p, p = node2_p, q = node3_p)
     solution.lowestCommonAncestor_2(root=root_p, p=node2_p, q=node3_p)
+    solution.lowestCommonAncestor_3(root=root_p, p=node2_p, q=node3_p)
 

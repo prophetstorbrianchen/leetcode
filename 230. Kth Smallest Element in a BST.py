@@ -34,6 +34,20 @@ class Solution:
         print(res_list)
         return res_list[k - 1]
 
+    def kthSmallest_2(self, root: [TreeNode], k: int) -> int:
+        def dfs(r):
+            if not r:
+                return
+
+            dfs(r.left)
+            result.append(r.val)
+            dfs(r.right)
+
+        result = []
+        dfs(root)
+        # print(result)
+        return result[k - 1]
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -43,4 +57,5 @@ if __name__ == '__main__':
     node2_p.left = node4_p
     node2_p.right = node5_p
     node4_p.left = node6_p
-    solution.kthSmallest(root = root_p, k = 3)
+    # solution.kthSmallest(root = root_p, k = 3)
+    solution.kthSmallest_2(root=root_p, k=3)
