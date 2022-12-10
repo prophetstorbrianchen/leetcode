@@ -126,6 +126,41 @@ class BuildTree:
         root = dfs()
         return root
 
+    def serialize_2(self, root):
+        # prefix
+        def dfs(r):
+            if not r:
+                hash_list.append("N")
+                return
+
+            hash_list.append(r.val)
+            dfs(r.left)
+            dfs(r.right)
+
+        hash_list = []
+        dfs(root)
+        return hash_list
+
+    def deserialize_2(self, data):
+        self.i = 0
+
+        def dfs():
+            if data[self.i] == "N":
+                self.i = self.i + 1
+                return None
+
+            r = TreeNode(data[self.i])
+            self.i = self.i + 1
+
+            r.left = dfs()
+            r.right = dfs()
+
+            return r
+
+        root = dfs()
+
+        return root
+
 
 if __name__ == '__main__':
     root_p, node2_p, node3_p, node4_p, node5_p, node6_p = TreeNode(5), TreeNode(3), TreeNode(6), TreeNode(2), TreeNode(4), TreeNode(1)
@@ -140,3 +175,7 @@ if __name__ == '__main__':
     root = ser.deserialize(root_string)
     root_string = ser.serialize_2(root_p)
     root = ser.deserialize(root_string)
+
+    build = BuildTree()
+    root_list = build.serialize_2(root_p)
+    root = build.deserialize_2(root_list)

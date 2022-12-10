@@ -79,7 +79,68 @@ class Solution:
 
         return False
 
+    def exist_2(self, board: [[str]], word: str) -> bool:
+        # only use dfs and not use tried
+        # TLE -> 測資改大了
+        def dfs(r, c, path):
+            # base
+            if path == word:
+                return True
+
+            # 上
+            if 0 <= r - 1 and r - 1 < rows and 0 <= c and c < cols and (r - 1, c) not in visited and path in word:
+                visited.add((r - 1, c))
+                top = dfs(r - 1, c, path + board[r - 1][c])
+                visited.remove((r - 1, c))
+            else:
+                top = False
+
+            # 下
+            if 0 <= r + 1 and r + 1 < rows and 0 <= c and c < cols and (r + 1, c) not in visited and path in word:
+                visited.add((r + 1, c))
+                down = dfs(r + 1, c, path + board[r + 1][c])
+                visited.remove((r + 1, c))
+            else:
+                down = False
+
+            # 左
+            if 0 <= r and r < rows and 0 <= c - 1 and c - 1 < cols and (r, c - 1) not in visited and path in word:
+                visited.add((r, c - 1))
+                left = dfs(r, c - 1, path + board[r][c - 1])
+                visited.remove((r, c - 1))
+            else:
+                left = False
+
+            # 右
+            if 0 <= r and r < rows and 0 <= c + 1 and c + 1 < cols and (r, c + 1) not in visited and path in word:
+                visited.add((r, c + 1))
+                right = dfs(r, c + 1, path + board[r][c + 1])
+                visited.remove((r, c + 1))
+            else:
+                right = False
+
+            if top or down or left or right:
+                return True
+            else:
+                return False
+
+        rows = len(board)
+        cols = len(board[0])
+
+        visited = set()
+        for row in range(rows):
+            for col in range(cols):
+                string = board[row][col]
+                visited.add((row, col))
+                if dfs(row, col, string):
+                    # print(True)
+                    return True
+                visited.remove((row, col))
+
+        # print(False)
+        return False
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.exist(board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCB")
+    solution.exist_2(board = [["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"]], word = "BAAAAAAAAAAAAAA")

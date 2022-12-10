@@ -117,8 +117,29 @@ class Solution:
         dfs(target, [])
         print(res)
 
+    def combinationSum_3(self, candidates: [int], target: int) -> [[int]]:
+        def backtracking(ans):
+            if sum(ans) == target:
+                result.append(ans)
+                return
+
+            for n in candidates:
+                # **去重的方法** -> 容易忘記 -> [2,2,3],[2,3,2],[3,2,2] 後2個是不能出現的
+                if ans and n < ans[-1]:
+                    continue
+
+                if sum(ans + [n]) > target:
+                    continue
+                else:
+                    backtracking(ans + [n])
+
+        result = []
+        backtracking([])
+        # print(result)
+        return result
+
 
 if __name__ == '__main__':
     solution = Solution()
     # solution.combinationSum(candidates = [2,3,6,7], target = 7)
-    solution.combinationSum_2(candidates=[2, 3, 6, 7], target=7)
+    solution.combinationSum_3(candidates=[8,7,4,3], target=11)
