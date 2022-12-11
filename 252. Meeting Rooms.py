@@ -10,7 +10,7 @@ class Solution:
         for i in range(1, len(sorted_intervals)):
             # non-overlap
             if res[-1][1] <= sorted_intervals[i][0]:
-                continue
+                res.append(sorted_intervals[i])
             else:
                 # overlap
                 print(False)
