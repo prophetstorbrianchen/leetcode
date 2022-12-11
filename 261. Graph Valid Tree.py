@@ -1,3 +1,6 @@
+import collections
+
+
 class Solution:
     # hint
     # the valid tree -> no loop and the visit node is same with node number
@@ -92,12 +95,45 @@ class Solution:
         # 使用dfs來判斷是否有cycle
         return dfs(node, prev) and len(visit) == n
 
+    def validTree_bfs(self, n: int, edges: [[int]]) -> bool:
+        # BFS的解法
+        # 此題為無向圖的topology sort -> 無向無環圖
+        # 無向圖就不需要使用indegree來做了
+
+        # **BFS 環的檢查**
+        if len(edges) != n - 1:
+            return False
+
+        # 無向圖的做圖
+        dist = collections.defaultdict(list)
+        for n1, n2 in edges:
+            dist[n1].append(n2)
+            dist[n2].append(n1)
+
+        # 從0這個node開始 -> 因為只要正常的tree必定可以從node 0從頭走到尾
+        visited = set()
+        queue = collections.deque([0])
+
+        # BFS
+        # visit所組成的list表示是使用BFS所走過的順序 -> 有全部走完表示為無向無環圖
+        # 為無向無環圖的迭代
+        while queue:
+            node = queue.popleft()
+            visited.add(node)
+            for related in dist[node]:
+                if related not in visited:
+                    visited.add(related)
+                    queue.append(related)
+
+        # 為node有沒有相連的檢查
+        return len(visited) == n
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.validTree(n=5, edges=[[0,1],[0,2],[0,3],[0,4]])
+    # solution.validTree_bfs(n=5, edges=[[0,1],[0,2],[0,3],[0,4]])
     # solution.validTree(n=5, edges=[[0, 1], [0, 2], [0, 3], [1, 4]])
     # 為clcyle的圖形
-    # solution.validTree(n=3, edges=[[0, 1], [1, 2], [2, 0]])
+    solution.validTree_bfs(n=3, edges=[[0, 1], [1, 2], [2, 0]])
     # 為visit node is same with node number
     # solution.validTree(n=6, edges=[[0, 1], [0, 2], [0, 3], [4, 5]])

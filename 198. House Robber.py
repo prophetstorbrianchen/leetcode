@@ -45,6 +45,22 @@ class Solution:
 
         return dp[-1]
 
+    def rob_3(self, nums: [int]) -> int:
+        dp = [-1] * len(nums)
+
+        # base case
+        if len(nums) == 1:
+            dp[0] = nums[0]
+        if len(nums) >= 2:
+            dp[0] = nums[0]
+            dp[1] = max(nums[0], nums[1])
+
+        for i in range(2, len(nums)):
+            dp[i] = max(dp[i - 2] + nums[i], dp[i - 1])
+
+        # print(dp)
+        return dp[-1]
+
 
 if __name__ == '__main__':
     solution = Solution()

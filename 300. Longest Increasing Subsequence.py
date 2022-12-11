@@ -21,6 +21,7 @@ class Solution:
 
         # algo - button up
         for i in range(len(nums) - 1, -1, -1):
+            # 最後一個不看
             if i == len(nums) - 1:
                 continue
             else:
@@ -31,7 +32,21 @@ class Solution:
         print(dp)
         return max(dp)
 
+    def lengthOfLIS_3(self, nums: [int]) -> int:
+        dp = [1] * len(nums)
+
+        for n in range(len(nums) - 1, -1, -1):
+            # 因為最後一個的dp必定為1 -> dp[-1] = 1
+            if n == 0:
+                break
+            for i in range(len(nums) - 1, n - 1, -1):
+                if nums[n - 1] < nums[i]:
+                    dp[n - 1] = max(dp[n - 1], dp[i] + 1)
+
+        print(dp)
+        return max(dp)
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.lengthOfLIS_2(nums = [0,1,0,3,2,3])
+    solution.lengthOfLIS_3(nums = [1,2,4,3])
