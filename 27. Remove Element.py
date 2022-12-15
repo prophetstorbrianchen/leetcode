@@ -1,3 +1,6 @@
+from functools import cmp_to_key
+
+
 class Solution:
     # 第一種方法比較乾淨俐落，但比較投機一點，因為用了-1來替代
     # 第二種方法，就是用移的方式去處理
@@ -68,8 +71,24 @@ class Solution:
         print(nums)
         return len(nums) - val_count
 
+    def removeElement_3(self, nums: [int], val: int) -> int:
+        # 這樣沒有in place
+        def fun(a, b):
+            if b == val:
+                return -1
+            else:
+                return 0
+
+        val_count = 0
+        for i, n in enumerate(nums):
+            if n == val:
+                val_count = val_count + 1
+
+        nums.sort(key=cmp_to_key(fun), reverse=False)
+        print(nums)
+        return val_count
 
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.removeElement_2(nums = [0,1,2,2,3,0,4,2], val = 2)
+    solution.removeElement_3(nums = [0,1,2,2,3,0,4,2], val = 2)
