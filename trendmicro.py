@@ -262,6 +262,48 @@ class Solution_2:
         return max_length
         """
 
+    def question_4(self, s):
+        # Stores the total
+        # count of substrings
+
+        n = len(s)
+        count = 0
+
+        # Traverse the range [0, N]:
+        for i in range(n):
+
+            # Traverse the range [i + 1, N]
+            for j in range(i + 1, n + 1):
+                # Stores the substring over
+                # the range of indices [i, len]
+                test_str = (s[i: j])
+                print(test_str)
+
+                # Stores the frequency of characters
+                res = {}
+
+                # Count frequency of each character
+                for keys in test_str:
+                    res[keys] = res.get(keys, 0) + 1
+
+                flag = 0
+                # Traverse the dictionary
+                for keys in res:
+                    # If any of the keys
+                    # have odd count
+                    if res[keys] % 2 != 0:
+                        flag = 1
+                        break
+
+                # Otherwise
+                if flag == 0:
+                    # print(test_str)
+                    count += 1
+
+        # Return count
+        print(count)
+        return count
+
 
 if __name__ == '__main__':
     solution = Solution()
@@ -281,5 +323,5 @@ if __name__ == '__main__':
     # A = [[1,1,5,2,3], [4,5,6,4,3],[9,4,4,1,5]]
     # A = [[4,3],[5,5],[6,2]]
     # solution2.question_1(A=A)
-    # S = "zthtzh"
-    # solution2.question_3(S=S)
+    S = "zthtzh"
+    solution2.question_4(s=S)
