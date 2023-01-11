@@ -29,8 +29,35 @@ class Solution:
         print(res)
         return res
 
+    def minMeetingRooms_2(self, intervals: list) -> int:
+        start_time = []
+        end_time = []
+        for start, end in intervals:
+            start_time.append(start)
+            end_time.append(end)
+
+        # sort start_time and end_time
+        start_time.sort()
+        end_time.sort()
+
+        start_index = 0
+        end_index = 0
+        count = 0
+        res = []
+        while start_index < len(start_time):
+            if start_time[start_index] < end_time[end_index]:
+                count = count + 1
+                start_index = start_index + 1
+            else:
+                count = count - 1
+                end_index = end_index + 1
+            res.append(count)
+
+        # print(max(res))
+        return max(res) if max(res) >= 0 else 0
+
 
 if __name__ == '__main__':
     solution = Solution()
     # solution.minMeetingRooms(intervals = [(0, 30), (5, 10), (15, 20)])
-    solution.minMeetingRooms(intervals=[(0, 30), (5, 10), (10, 15)])
+    solution.minMeetingRooms_2(intervals=[(0, 30), (5, 10), (10, 15)])
