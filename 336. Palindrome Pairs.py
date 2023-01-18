@@ -64,7 +64,43 @@ class Solution:
 
         return result
 
+    def palindromePairs_2(self, words: [str]) -> [[int]]:
+        # 构建一个字典，key为word，valie为索引
+        res = []
+        worddict = {}
+        for i, word in enumerate(words):
+            worddict.update({
+                word: i
+            })
+
+        for i, word in enumerate(words):
+            # 開始對word裡面的字做分析，看有無回文
+            # 是允許空字串的喔，所以要+1
+            for j in range(len(word) + 1):
+                # tmp1 -> 前綴, tmp2 -> 後綴
+                tmp1 = word[:j]
+                tmp2 = word[j:]
+                # 当word的前缀在字典中，且不是word自身，且word剩下部分是回文(空也是回文)
+                # ex: "abcd" -> 可找到"dcba"在word中
+                if tmp1[::-1] in worddict and worddict[tmp1[::-1]] != i and tmp2 == tmp2[::-1]:
+                    res.append([i, worddict[tmp1[::-1]]])
+
+                # 当word的后缀在字典中，且不是word自身，且word剩下部分是回文(空也是回文)
+                # ex: "lls" -> 分成"ll"和"s" -> 這個只能在第二個if找到，第一個if是找不到相對應的回文 -> "slls"
+                if tmp2[::-1] in worddict and worddict[tmp2[::-1]] != i and tmp1 == tmp1[::-1]:
+                    res.append([worddict[tmp2[::-1]], i])
+
+        temp_set = set()
+        for item in res:
+            temp_set.add(tuple(item))
+
+        result = []
+        for item in temp_set:
+            result.append(list(item))
+
+        return result
+
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.palindromePairs(words = ["abcd","dcba","lls","s","sssll"])
+    solution.palindromePairs_2(words = ["abcd","dcba","lls","s","sssll"])
